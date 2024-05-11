@@ -1,0 +1,39 @@
+[[pages]]
+path = "interface/Home.py"
+name = "CarlitosDB - Página Inicial"
+icon = "🖥️"
+
+[[pages]]
+path = "interface/pages/Funcionarios.py"
+name = "Funcionarios"
+icon = "👩‍💼"
+
+[[pages]]
+path = "interface/pages/Atendentes.py"
+name = "Atendentes"
+icon = "📞"
+
+[[pages]]
+path = "interface/pages/Motoqueiros.py"
+name = "Motoqueiros"
+icon = "🛵"
+
+[[pages]]
+path = "interface/pages/Gerentes.py"
+name = "Gerentes"
+icon = "👨‍💼"
+
+[[pages]]
+path = "interface/pages/Clientes.py"
+name = "Clientes"
+icon = "👥"
+
+[[pages]]
+path = "interface/pages/Alimentos.py"
+name = "Alimentos"
+icon = "🍔"
+
+[[pages]]
+path = "interface/pages/Pedidos.py"
+name = "Pedidos"
+icon = "🛒"
