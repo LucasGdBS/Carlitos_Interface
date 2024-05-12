@@ -1,9 +1,16 @@
 import streamlit as st
 from st_on_hover_tabs import on_hover_tabs as ht
+
+# Importing page modules
 import modules.funcionarios as func
 import modules.clientes as clien
 import modules.alimentos as alim
 import modules.pedidos as pedi
+import modules.atendentes as aten
+import modules.motoqueiros as moto
+import modules.gerentes as geren
+
+
 
 def app():
 
@@ -19,16 +26,13 @@ def app():
         func.page_funcionario()
 
     elif tabs == 'Atendentes':
-        st.title("Navigation Bar")
-        st.write('Name of option is {}'.format(tabs))
+        aten.page_atendente()
     
     elif tabs == 'Motoqueiros':
-        st.title("Navigation Bar")
-        st.write('Name of option is {}'.format(tabs))
+        moto.page_motoqueiro()
     
     elif tabs == 'Gerentes':
-        st.title("Navigation Bar")
-        st.write('Name of option is {}'.format(tabs))
+        geren.page_gerente()
     
     elif tabs == 'Clientes':
         clien.page_cliente()
