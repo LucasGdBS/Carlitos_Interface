@@ -5,7 +5,7 @@ import numpy as np
 
 def page_gerente():
     st.title("💼 Gerentes")
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     
 
     st.subheader("Lista de Gerentes")

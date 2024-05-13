@@ -5,7 +5,7 @@ import numpy as np
 
 def page_cliente():
     st.title("👨 Clientes")
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     
     with st.form("cadastro_clientes", clear_on_submit=True):
         st.subheader("Cadastro de Clientes")
@@ -29,14 +29,14 @@ def page_cliente():
 
 
         
-        st.markdown("##")
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if st.form_submit_button("Cadastrar"):
             st.write("Cliente cadastrado com sucesso")
         
 
 
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("Lista de Clientes")
 
 
