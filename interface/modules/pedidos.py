@@ -5,7 +5,7 @@ import numpy as np
 
 def page_pedido():
     st.title("🧾 Pedidos")
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     
 
     with st.form("cadastro_pedidos", clear_on_submit=True):

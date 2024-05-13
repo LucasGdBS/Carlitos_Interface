@@ -5,7 +5,7 @@ import numpy as np
 
 def page_alimento():
     st.title("🍔 Alimentos")
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     
     with st.form("cadastro_alimento", clear_on_submit=True):
         st.subheader("Cadastro de Alimentos")
@@ -24,14 +24,14 @@ def page_alimento():
         
 
         
-        st.markdown("##")
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if st.form_submit_button("Cadastrar"):
             st.write("Alimento cadastrado com sucesso")
         
 
 
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("Lista de Alimentos")
 
 

@@ -5,7 +5,7 @@ import numpy as np
 
 def page_funcionario():
     st.title("👨‍💼 Funcionarios")
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     
 
     with st.form("cadastro_funcionarios", clear_on_submit=True):
@@ -22,14 +22,14 @@ def page_funcionario():
             cargo = st.text_input("Cargo")
 
         
-        st.markdown("##")
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if st.form_submit_button("Cadastrar"):
             st.write("Funcionario cadastrado com sucesso")
         
 
 
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("Lista de Funcionarios")
 
 
