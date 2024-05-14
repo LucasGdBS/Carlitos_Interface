@@ -28,14 +28,14 @@ def page_pedido():
             cpf_funcionario = st.text_input("CPF do Funcionario")
 
         
-        st.markdown("##")
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if st.form_submit_button("Cadastrar"):
             st.write("Pedido cadastrado com sucesso")
         
 
 
-    st.markdown("##")
+    st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("Lista de Pedidos")
 
 
