@@ -67,54 +67,96 @@ def edit_funcionario_by_cpf(cpf, nome, salario):
 
 
 def page_funcionario():
-    st.title("👨‍💼 Funcionarios")
+    st.title("👨‍💼 Funcionários")
     st.markdown("<br>", unsafe_allow_html=True)
+
+
+    if "options" not in st.session_state:
+        st.session_state.options = "cadastrar"
+
+
+    cols = st.columns(3)
+    with cols[0]:
+        if st.button("Cadastrar",use_container_width=True):
+            st.session_state.options = "cadastrar"
+    with cols[1]:
+        if st.button("Editar", use_container_width=True):
+            st.session_state.options = "editar"
+    with cols[2]:
+        if st.button("Deletar", use_container_width=True):
+            st.session_state.options = "deletar"
 
 
 
     # * Criar Funcionario
-    with st.form("cadastrar_funcionario", clear_on_submit=True):
-        st.subheader("Cadastrar Funcionário")
-        
-        cols = st.columns(3)
-        with cols[0]:
-            cpf = st.text_input("CPF")
-        with cols[1]:
-            nome = st.text_input("Nome")
-        with cols[2]:
-            salario = st.text_input("Salario")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
+    if st.session_state.options == "cadastrar":
+        with st.form("cadastrar_funcionario", clear_on_submit=True):
+            st.subheader("Cadastrar Funcionário")
 
-        if st.form_submit_button("Cadastrar"):
-            new_func = create_funcionario(cpf, nome, salario)
-            if new_func:
-                st.toast("Funcionário cadastrado com sucesso", icon="🎉")
-            else:
-                st.toast("Erro ao cadastrar funcionário", icon="⚠️")
-
+            cols = st.columns(3)
+            with cols[0]:
+                cpf = st.text_input("CPF")
+            with cols[1]:
+                nome = st.text_input("Nome")
+            with cols[2]:
+                salario = st.text_input("Salario")
+            
+    
+            col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
+            with col1:
+                if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
+                    pass
+            with col2:
+                if st.form_submit_button("Cadastrar", use_container_width=True):
+                    new_func = create_funcionario(cpf, nome, salario)
+                    if new_func:
+                        st.toast("Funcionário cadastrado com sucesso", icon="🎉")
+                    else:
+                        st.toast("Erro ao cadastrar funcionário", icon="⚠️")
 
 
     # * Editar Funcionario
-    with st.form("editar_funcionario", clear_on_submit=True):
-        st.subheader("Editar Funcionário")
+    if st.session_state.options == "editar":
+        with st.form("editar_funcionario", clear_on_submit=True):
+            st.subheader("Editar Funcionário")
 
-        cols = st.columns(3)
-        with cols[0]:
+            cols = st.columns(3)
+            with cols[0]:
+                cpf = st.text_input("CPF")
+            with cols[1]:
+                nome = st.text_input("Nome")
+            with cols[2]:
+                salario = st.text_input("Salario")
+            
+            col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
+
+            with col1:
+                if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
+                    pass
+            with col2:
+                if st.form_submit_button("Editar", use_container_width=True):
+                    edit_func = edit_funcionario_by_cpf(cpf, nome, salario)
+                    if edit_func:
+                        st.toast("Funcionário editado com sucesso", icon="🎉")
+                    else:
+                        st.toast("Erro ao editar funcionário", icon="⚠️")
+
+
+    # * Deletar Funcionario
+    if st.session_state.options == "deletar":
+        with st.form("deletar_funcionario", clear_on_submit=True):
+            st.subheader("Deletar Funcionário")
+
             cpf = st.text_input("CPF")
-        with cols[1]:
-            nome = st.text_input("Nome")
-        with cols[2]:
-            salario = st.text_input("Salario")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
 
-        if st.form_submit_button("Editar"):
-            edit_func = edit_funcionario_by_cpf(cpf, nome, salario)
-            if edit_func:
-                st.toast("Funcionário editado com sucesso", icon="🎉")
-            else:
-                st.toast("Erro ao editar funcionário", icon="⚠️")
+            col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
+
+            with col1:
+                if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
+                    pass
+            with col2:
+                if st.form_submit_button("Deletar", use_container_width=True):
+                    st.toast("Funcionário deletado com sucesso", icon="🎉")
 
 
 
@@ -129,6 +171,7 @@ def page_funcionario():
         data_func = fetch_funcionario_by_nome(name_func)
     else:
         data_func = fetch_funcionario()
+
 
 
     if data_func == []:
