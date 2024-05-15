@@ -1,68 +1,140 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import requests
+
+
+
+def fetch_funcionario():
+    url = "http://localhost:8080/funcionarios/"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 404:
+            return []
+        
+    except Exception:
+        return []
+        
+
+def fetch_funcionario_by_nome(nome):
+    url = f"http://localhost:8080/funcionarios/buscar-por-nome?nome={nome}" 
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 404:
+            return []
+
+    except Exception:
+        return []
+
+
+def create_funcionario(cpf, nome, salario):
+    url = "http://localhost:8080/funcionarios/"
+    data = {
+        "cpf": cpf,
+        "nome": nome,
+        "salario": salario
+    }
+    try:
+        response = requests.post(url, json=data)
+        if response.status_code == 201:
+            return True
+        else:
+            return False
+    except Exception:
+        return False
+
+
+def edit_funcionario_by_cpf(cpf, nome, salario):
+    url = f"http://localhost:8080/funcionarios/editar-por-cpf/{cpf}"
+    data = {
+        "nome": nome,
+        "salario": salario
+    }
+    try:
+        response = requests.put(url, json=data)
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except Exception:
+        return False
+
+
 
 
 def page_funcionario():
     st.title("👨‍💼 Funcionarios")
     st.markdown("<br>", unsafe_allow_html=True)
-    
 
-    with st.form("cadastro_funcionarios", clear_on_submit=True):
-        st.subheader("Cadastro de Funcionarios")
 
-        cols = st.columns(2)
 
+    # * Criar Funcionario
+    with st.form("cadastrar_funcionario", clear_on_submit=True):
+        st.subheader("Cadastrar Funcionário")
+        
+        cols = st.columns(3)
         with cols[0]:
-            nome = st.text_input("Nome")
             cpf = st.text_input("CPF")
-
         with cols[1]:
+            nome = st.text_input("Nome")
+        with cols[2]:
             salario = st.text_input("Salario")
-            cargo = st.text_input("Cargo")
-
         
         st.markdown("<br>", unsafe_allow_html=True)
 
         if st.form_submit_button("Cadastrar"):
-            st.write("Funcionario cadastrado com sucesso")
+            new_func = create_funcionario(cpf, nome, salario)
+            if new_func:
+                st.toast("Funcionário cadastrado com sucesso", icon="🎉")
+            else:
+                st.toast("Erro ao cadastrar funcionário", icon="⚠️")
+
+
+
+    # * Editar Funcionario
+    with st.form("editar_funcionario", clear_on_submit=True):
+        st.subheader("Editar Funcionário")
+
+        cols = st.columns(3)
+        with cols[0]:
+            cpf = st.text_input("CPF")
+        with cols[1]:
+            nome = st.text_input("Nome")
+        with cols[2]:
+            salario = st.text_input("Salario")
         
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.form_submit_button("Editar"):
+            edit_func = edit_funcionario_by_cpf(cpf, nome, salario)
+            if edit_func:
+                st.toast("Funcionário editado com sucesso", icon="🎉")
+            else:
+                st.toast("Erro ao editar funcionário", icon="⚠️")
+
 
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.subheader("Lista de Funcionarios")
+    st.subheader("Lista de Funcionários")
 
 
-    sample_data = [
-        {
-            "nome": "João",
-            "cpf": "123.456.789-00",
-            "salario": "R$ 1.500,00",
-            "cargo": "Atendente",
-        },
-        {
-            "nome": "Maria",
-            "cpf": "987.654.321-00",
-            "salario": "R$ 2.500,00",
-            "cargo": "Gerente",
-        },
-        {
-            "nome": "José",
-            "cpf": "456.789.123-00",
-            "salario": "R$ 1.800,00",
-            "cargo": "Motoqueiro",
-        },
-        {
-            "nome": "Ana",
-            "cpf": "654.321.987-00",
-            "salario": "R$ 2.000,00",
-            "cargo": "Atendente",
-        },
-    ]
+
+    # * Exibir por nome ou exibir todos
+    name_func = st.text_input("Buscar por nome")
+    if name_func:
+        data_func = fetch_funcionario_by_nome(name_func)
+    else:
+        data_func = fetch_funcionario()
 
 
-    df_func = pd.DataFrame(sample_data)
-    df_func.columns = ["Nome", "CPF", "Salario", "Cargo"]
-
-    st.dataframe(df_func, hide_index=True, use_container_width=True)   
+    if data_func == []:
+        st.toast("Nenhum funcionário encontrado", icon="⚠️")
+    else:
+        df_func = pd.DataFrame(data_func)
+        df_func.columns = ["CPF", "Nome", "Salário"]
+        st.dataframe(df_func, hide_index=True, use_container_width=True)   
     
