@@ -86,7 +86,9 @@ def delete_funcionario(cpf):
         return False
 
 def clear_input():
-    st.session_state["input"] = ""
+    st.session_state["search_input"] = ""
+    st.session_state["forms_input"] = ""
+
 
 
 # * Página de Funcionários
@@ -99,6 +101,14 @@ def page_funcionario():
         st.session_state.options = "cadastrar"
     st.radio("Operações:", ["cadastrar", "editar", "deletar"], key="options", horizontal=True)
 
+
+    if st.session_state.options != "cadastrar":
+        col1, col2 = st.columns([12, 1])
+        with col1:
+            cpf_func = st.text_input("CPF do funcionário", key="forms_input", placeholder="cpf do funcionário", label_visibility="collapsed")
+            selected_func = fetch_funcionario_by_cpf(cpf_func)
+        with col2:
+            st.button("Limpar", on_click=clear_input, use_container_width=True, key="clear")
 
 
     # * Criar Funcionario
@@ -130,10 +140,6 @@ def page_funcionario():
 
     # * Editar Funcionario
     if st.session_state.options == "editar":
-
-        cpf_func = st.text_input("CPF do funcionário")
-        selected_func = fetch_funcionario_by_cpf(cpf_func)
-        
 
         if "changed" not in st.session_state:
             st.session_state.changed = False
@@ -176,24 +182,34 @@ def page_funcionario():
 
     # * Deletar Funcionario
     if st.session_state.options == "deletar":
-        with st.form("deletar_funcionario", clear_on_submit=True):
-            st.subheader("Deletar Funcionário")
+        
+        if selected_func:
+            with st.form("deletar_funcionario", clear_on_submit=True):
+                st.subheader("Deletar Funcionário")
 
-            cpf = st.text_input("CPF")
+                cols = st.columns(3)
+                with cols[0]:
+                    cpf = st.text_input("CPF", value=cpf_func, disabled=True)
+                with cols[1]:
+                    nome = st.text_input("Nome", value=selected_func["nome"], disabled=True)
+                with cols[2]:
+                    salario = st.text_input("Salario", value=selected_func["salario"], disabled=True)
+                
 
+                col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
+                with col1:
+                    if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
+                        pass
+                with col2:
+                    if st.form_submit_button("Deletar", use_container_width=True):
+                        delete_func = delete_funcionario(cpf)
+                        if delete_func:
+                            st.toast("Funcionário deletado com sucesso", icon="🎉")
+                        else:
+                            st.toast("Erro ao deletar funcionário", icon="⚠️")
 
-            col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
-            with col1:
-                if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
-                    pass
-            with col2:
-                if st.form_submit_button("Deletar", use_container_width=True):
-                    delete_func = delete_funcionario(cpf)
-                    if delete_func:
-                        st.toast("Funcionário deletado com sucesso", icon="🎉")
-                    else:
-                        st.toast("Erro ao deletar funcionário", icon="⚠️")
-                    
+        elif selected_func == [] and cpf_func != "":
+            st.toast("Funcionário não encontrado", icon="⚠️")                
 
 
 
@@ -208,7 +224,7 @@ def page_funcionario():
 
     col1, col2 = st.columns([12, 1])
     with col1:
-        id_func = st.text_input("ID do funcionário", label_visibility="collapsed", placeholder=f"{st.session_state.search} do funcionário", key="input")
+        id_func = st.text_input("ID do funcionário", label_visibility="collapsed", placeholder=f"{st.session_state.search} do funcionário", key="search_input")
     with col2:
        st.button("Limpar", on_click=clear_input, use_container_width=True)
            
