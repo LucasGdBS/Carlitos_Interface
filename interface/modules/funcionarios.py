@@ -85,8 +85,11 @@ def delete_funcionario(cpf):
     except Exception:
         return False
 
+def clear_input():
+    st.session_state["input"] = ""
 
 
+# * Página de Funcionários
 def page_funcionario():
     st.title("👨‍💼 Funcionários")
     st.markdown("<br>", unsafe_allow_html=True)
@@ -123,7 +126,6 @@ def page_funcionario():
                         st.toast("Funcionário cadastrado com sucesso", icon="🎉")
                     else:
                         st.toast("Erro ao cadastrar funcionário", icon="⚠️")
-
 
 
     # * Editar Funcionario
@@ -204,9 +206,14 @@ def page_funcionario():
     st.radio("Buscar por:", ["nome", "cpf"], key="search", horizontal=True)
 
 
-    id_func = st.text_input(" ", label_visibility="collapsed", placeholder=f"{st.session_state.search} do funcionário")
-
-
+    col1, col2 = st.columns([12, 1])
+    with col1:
+        id_func = st.text_input("ID do funcionário", label_visibility="collapsed", placeholder=f"{st.session_state.search} do funcionário", key="input")
+    with col2:
+       st.button("Limpar", on_click=clear_input, use_container_width=True)
+           
+            
+        
     # * Exibir por nome ou exibir todos
     if id_func:
         if st.session_state.search == "nome":
@@ -218,7 +225,7 @@ def page_funcionario():
     
 
     if data_func == []:
-        st.toast("Nenhum funcionário encontrado", icon="⚠️")
+        st.error("Nenhum funcionário encontrado")
     else:
         df_func = pd.DataFrame(data_func)
         df_func.columns = ["CPF", "Nome", "Salário"]
