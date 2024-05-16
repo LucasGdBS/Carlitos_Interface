@@ -1,4 +1,5 @@
 from utils.geren_modules import fetch_gerente, fetch_gerente_by_nome, fetch_gerente_by_cpf, create_gerente, delete_gerente
+from utils.func_modules import fetch_funcionario, fetch_funcionario_by_cpf
 from utils.page_modules import clear_input
 import streamlit as st
 import pandas as pd
@@ -14,19 +15,16 @@ def page_gerente():
         st.session_state.options = "atribuir cargo"
     st.radio("Operações:", ["atribuir cargo", "deletar"], key="options", horizontal=True)
 
+    
+    # cpf_func = st.text_input("CPF do gerente", key="forms_input", placeholder="cpf do gerente", label_visibility="collapsed")
+    values = fetch_funcionario()
+    values = [i["cpf"] for i in values]
+    
+    cpf_func = st.selectbox("CPF do gerente", values, key="forms_input", placeholder="cpf do gerente", label_visibility="collapsed", index=0)
+    selected_func = fetch_funcionario_by_cpf(cpf_func)
 
-   
-    col1, col2, col3 = st.columns([8, 1, 1])
-    with col1:
-        cpf_func = st.text_input("CPF do gerente", key="forms_input", placeholder="cpf do gerente", label_visibility="collapsed")
-        selected_func = fetch_gerente_by_cpf(cpf_func)
-    with col2:
-        if st.button("Buscar", use_container_width=True, key="top_search_button"):
-            selected_func = fetch_gerente_by_cpf(cpf_func)     
-    with col3:
-        st.button("Limpar", on_click=clear_input, use_container_width=True, key="clear")
 
-                
+            
     # * Atribuir cargo de gerência
     if st.session_state.options == "atribuir cargo":
 
@@ -45,7 +43,7 @@ def page_gerente():
                 with cols[0]:
                     cpf = st.text_input("CPF",value=cpf_func, disabled=True)
                 with cols[1]:
-                    nome = st.text_input("Nome", value=selected_func["nome"])
+                    nome = st.text_input("Nome", value=selected_func["nome"], disabled=True)
                 
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
