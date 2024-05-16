@@ -1,95 +1,7 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import requests
-import time
-
-
-def fetch_funcionario():
-    url = "http://localhost:8080/funcionarios/"
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 404:
-            return []
-        
-    except Exception:
-        return []
-        
-
-def fetch_funcionario_by_nome(nome):
-    url = f"http://localhost:8080/funcionarios/buscar-por-nome?nome={nome}" 
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 404:
-            return []
-
-    except Exception:
-        return []
-
-def fetch_funcionario_by_cpf(cpf):
-    url = f"http://localhost:8080/funcionarios/buscar-por-cpf?cpf={cpf}"
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 404:
-            return []
-    except Exception:
-        return []
-
-
-def create_funcionario(cpf, nome, salario):
-    url = "http://localhost:8080/funcionarios/"
-    data = {
-        "cpf": cpf,
-        "nome": nome,
-        "salario": salario
-    }
-    try:
-        response = requests.post(url, json=data)
-        if response.status_code == 201:
-            return True
-        else:
-            return False
-    except Exception:
-        return False
-
-
-def edit_funcionario_by_cpf(cpf, nome, salario):
-    url = f"http://localhost:8080/funcionarios/editar-por-cpf/{cpf}"
-    data = {
-        "nome": nome,
-        "salario": salario
-    }
-    try:
-        response = requests.put(url, json=data)
-        if response.status_code == 200:
-            return True
-        else:
-            return False
-    except Exception:
-        return False
-
-def delete_funcionario(cpf):
-    url = f"http://localhost:8080/funcionarios/{cpf}"
-    try:
-        response = requests.delete(url)
-        if response.status_code == 200:
-            return True
-        else:
-            return False
-    except Exception:
-        return False
-
-
-def clear_input():
-    st.session_state["search_input"] = ""
-    st.session_state["forms_input"] = ""
-
+from utils.page_modules import clear_input
+from utils.api_modules import fetch_funcionario, fetch_funcionario_by_cpf, fetch_funcionario_by_nome, create_funcionario, edit_funcionario_by_cpf, delete_funcionario
 
 
 
@@ -192,8 +104,10 @@ def page_funcionario():
             st.session_state.deleted = False
         if st.session_state.deleted:
             st.session_state.deleted = False
+
             st.toast("Funcionário deletado com sucesso", icon="🎉")
         
+
         if selected_func:
             with st.form("deletar_funcionario", clear_on_submit=True):
                 st.subheader("Deletar Funcionário")
@@ -220,8 +134,9 @@ def page_funcionario():
                 with col2:
                     if st.form_submit_button("Cancelar",type='primary', use_container_width=True):
                         pass
-        elif selected_func == [] and cpf_func != "":
+        elif selected_func == [] and cpf_func != "" and st.session_state.deleted == True:
             st.toast("Funcionário não encontrado", icon="⚠️")                
+
 
 
     st.markdown("<br>", unsafe_allow_html=True)
