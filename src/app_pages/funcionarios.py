@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils.page_modules import clear_input
-from utils.api_modules import fetch_funcionario, fetch_funcionario_by_cpf, fetch_funcionario_by_nome, create_funcionario, edit_funcionario_by_cpf, delete_funcionario
+from utils.func_modules import fetch_funcionario, fetch_funcionario_by_cpf, fetch_funcionario_by_nome, create_funcionario, edit_funcionario_by_cpf, delete_funcionario
 
 
 
@@ -17,7 +17,7 @@ def page_funcionario():
 
 
     if st.session_state.options != "cadastrar":
-        col1, col2, col3 = st.columns([11, 1, 1])
+        col1, col2, col3 = st.columns([8, 1, 1])
         with col1:
             cpf_func = st.text_input("CPF do funcionário", key="forms_input", placeholder="cpf do funcionário", label_visibility="collapsed")
             selected_func = fetch_funcionario_by_cpf(cpf_func)
@@ -148,7 +148,7 @@ def page_funcionario():
     st.radio("Buscar por:", ["nome", "cpf"], key="search", horizontal=True)
 
 
-    col1, col2, col3 = st.columns([11, 1, 1])
+    col1, col2, col3 = st.columns([8, 1, 1])
     with col1:
         id_func = st.text_input("ID do funcionário", label_visibility="collapsed", placeholder=f"{st.session_state.search} do funcionário", key="search_input")
     

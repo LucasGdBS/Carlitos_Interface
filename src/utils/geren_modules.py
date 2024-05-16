@@ -1,7 +1,9 @@
 import requests
 
-def fetch_funcionario():
-    url = "http://localhost:8080/funcionarios/"
+
+
+def fetch_gerente():
+    url = "http://localhost:8080/gerentes"
     try:
         response = requests.get(url)
         if response.status_code == 200:
@@ -11,38 +13,39 @@ def fetch_funcionario():
         
     except Exception:
         return []
+
+
+
+def fetch_gerente_by_nome(nome):
+    url = f"http://localhost:8080/gerentes/buscar-por-nome?nome={nome}"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 404:
+            return []
         
+    except Exception:
+        return []
 
-def fetch_funcionario_by_nome(nome):
-    url = f"http://localhost:8080/funcionarios/buscar-por-nome?nome={nome}" 
+
+def fetch_gerente_by_cpf(cpf):
+    url = f"http://localhost:8080/gerentes/buscar-por-cpf?cpf={cpf}"
     try:
         response = requests.get(url)
         if response.status_code == 200:
             return response.json()
         elif response.status_code == 404:
             return []
-
+        
     except Exception:
         return []
+    
 
-def fetch_funcionario_by_cpf(cpf):
-    url = f"http://localhost:8080/funcionarios/buscar-por-cpf?cpf={cpf}"
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 404:
-            return []
-    except Exception:
-        return []
-
-
-def create_funcionario(cpf, nome, salario):
-    url = "http://localhost:8080/funcionarios/"
+def create_gerente(cpf):
+    url = "http://localhost:8080/gerentes"
     data = {
         "cpf": cpf,
-        "nome": nome,
-        "salario": salario
     }
     try:
         response = requests.post(url, json=data)
@@ -53,24 +56,8 @@ def create_funcionario(cpf, nome, salario):
     except Exception:
         return False
 
-
-def edit_funcionario_by_cpf(cpf, nome, salario):
-    url = f"http://localhost:8080/funcionarios/editar-por-cpf/{cpf}"
-    data = {
-        "nome": nome,
-        "salario": salario
-    }
-    try:
-        response = requests.put(url, json=data)
-        if response.status_code == 200:
-            return True
-        else:
-            return False
-    except Exception:
-        return False
-
-def delete_funcionario(cpf):
-    url = f"http://localhost:8080/funcionarios/{cpf}"
+def delete_gerente(cpf):
+    url = f"http://localhost:8080/gerentes/{cpf}"
     try:
         response = requests.delete(url)
         if response.status_code == 200:

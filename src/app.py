@@ -12,7 +12,11 @@ import app_pages.atendentes as aten
 import app_pages.motoqueiros as moto
 import app_pages.gerentes as geren
 
+# Config files
 from config import config as cfg
+
+
+
 
 def app(page):
     st.set_page_config(layout="wide")
