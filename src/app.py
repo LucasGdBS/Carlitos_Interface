@@ -3,21 +3,26 @@
 import streamlit as st
 from st_on_hover_tabs import on_hover_tabs as ht
 
-# Page modules
-import modules.funcionarios as func
-import modules.clientes as clien
-import modules.alimentos as alim
-import modules.pedidos as pedi
-import modules.atendentes as aten
-import modules.motoqueiros as moto
-import modules.gerentes as geren
-import config.config as cfg
+# App pages
+import app_pages.funcionarios as func
+import app_pages.clientes as clien
+import app_pages.alimentos as alim
+import app_pages.pedidos as pedi
+import app_pages.atendentes as aten
+import app_pages.motoqueiros as moto
+import app_pages.gerentes as geren
+
+# Config files
+from config import config as cfg
+
 
 
 
 def app(page):
     st.set_page_config(layout="wide")
-    st.markdown('<style>' + open('../style.css').read() + '</style>', unsafe_allow_html=True)
+    st.markdown('<style>' + open('./assets/style.css').read() + '</style>', unsafe_allow_html=True)
+
+
     with st.sidebar:    
         tabs = ht (tabName=['Funcionarios', 'Atendentes', 'Motoqueiros', 'Gerentes', 'Clientes', 'Alimentos', 'Pedidos'], 
                             iconName=['👨‍💼', '☎️', '🏍️', '‍💼', '🧑', '🍔', '🧾'], default_choice=page)
