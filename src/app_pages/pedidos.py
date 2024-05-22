@@ -1,99 +1,80 @@
 import streamlit as st
 import pandas as pd
+from utils.page_modules import clear_input
+# ! Mudar o import pras funções dos pedidos
+# from utils.func_modules import fetch_funcionario, fetch_funcionario_by_cpf, fetch_funcionario_by_nome, create_funcionario, edit_funcionario_by_cpf, delete_funcionario
 
 
+
+# * Página dos Pedidos
 def page_pedido():
     st.title("🧾 Pedidos")
     st.markdown("<br>", unsafe_allow_html=True)
-    
 
-    with st.form("cadastro_pedidos", clear_on_submit=True):
-        st.subheader("Cadastro de Pedidos")
 
-        cols = st.columns(2)
+    # * Registrar Pedido
 
-        with cols[0]:
-            num_pedido = st.text_input("Numero do Pedido")
-            valor_total = st.number_input("Valor Total", value=None)
-            dt_pedido = st.date_input("Data do Pedido", value=None)
-            forma_pagamento = st.text_input("Forma de Pagamento")
-            taxa_entrega = st.number_input("Taxa de Entrega", value=None)
+    with st.form("registrar_pedido", clear_on_submit= True):
+        st.subheader("Registrar Pedido")
 
-        with cols[1]:
-            desconto = st.number_input("Desconto", value=None)
-            qnt_produto = st.number_input("Quantidade de Produtos", value=None)
-            telefone_cliente = st.text_input("Telefone do Cliente")
-            id_produto = st.text_input("ID do Produto")
-            cpf_funcionario = st.text_input("CPF do Funcionario")
-
+        # ! Alterar para dados do pedido
+        # cols = st.columns(3)
+        # with cols[0]:
+        #     cpf = st.text_input("CPF")
+        # with cols[1]:
+        #     nome = st.text_input("Nome")
+        # with cols[2]:
+        #     salario = st.text_input("Salario")
         
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        if st.form_submit_button("Cadastrar"):
-            st.write("Pedido cadastrado com sucesso")
         
+        col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
+        # with col1:
+        #     if st.form_submit_button("Registro", use_container_width=True):
+        #         # ! Alterar pra função de registrar pedido
+        #         new_func = create_funcionario(cpf, nome, salario)
+        #         if new_func:
+        #             st.toast("Pedido registrado com sucesso", icon="🎉")
+        #         else:
+        #             st.toast("Erro ao registrar um pedido", icon="⚠️")
+        # with col2:
+        #     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
+        #         pass
 
+  
+  
     st.markdown("<br>", unsafe_allow_html=True)
-    st.subheader("Lista de Pedidos")
+    st.subheader("Lista dos Pedidos")
 
 
-    sample_data = [
-        {
-            "num_pedido": "123",
-            "valor_total": 100.00,
-            "dt_pedido": "01/01/2022",
-            "forma_pagamento": "Dinheiro",
-            "taxa_entrega": 5.00,
-            "desconto": 0.00,
-            "qnt_produto": 2,
-            "telefone_cliente": "(11) 99999-9999",
-            "id_produto": "123",
-            "cpf_funcionario": "123.456.789-00"
-        },
-        {
-            "num_pedido": "456",
-            "valor_total": 150.00,
-            "dt_pedido": "01/01/2022",
-            "forma_pagamento": "Cartão",
-            "taxa_entrega": 5.00,
-            "desconto": 0.00,
-            "qnt_produto": 3,
-            "telefone_cliente": "(11) 99999-9999",
-            "id_produto": "123",
-            "cpf_funcionario": "123.456.789-00"
-        },
-        {
-            "num_pedido": "789",
-            "valor_total": 200.00,
-            "dt_pedido": "01/01/2022",
-            "forma_pagamento": "Pix",
-            "taxa_entrega": 5.00,
-            "desconto": 0.00,
-            "qnt_produto": 4,
-            "telefone_cliente": "(11) 99999-9999",
-            "id_produto": "123",
-            "cpf_funcionario": "123.456.789-00"
-        },
-        {
-            "num_pedido": "101",
-            "valor_total": 250.00,
-            "dt_pedido": "01/01/2022",
-            "forma_pagamento": "Dinheiro",
-            "taxa_entrega": 5.00,
-            "desconto": 0.00,
-            "qnt_produto": 5,
-            "telefone_cliente": "(11) 99999-9999",
-            "id_produto": "123",
-            "cpf_funcionario": "123.456.789-00"
-        
-        }
-    ]
+    if "search" not in st.session_state:
+        st.session_state.search = "id"
 
 
-    df_pedido = pd.DataFrame(sample_data)
-    df_pedido.columns = ["Numero do Pedido", "Valor Total", "Data do Pedido", "Forma de Pagamento", "Taxa de Entrega", "Desconto", "Quantidade de Produtos", 
-                            "Telefone do Cliente", "ID do Produto", "CPF do Funcionario"]
-
-    st.dataframe(df_pedido, hide_index=True, use_container_width=True)   
+    col1, col2, col3 = st.columns([8, 1, 1])
+    with col1:
+        id_func = st.text_input("ID do pedido", label_visibility="collapsed", placeholder=f"{st.session_state.search} do pedido", key="search_input")
     
+    with col2:
+        if st.button("Buscar", use_container_width=True, key="bottom_search_button"):
+            pass
+    with col3:
+        st.button("Limpar", on_click=clear_input, use_container_width=True)
+        
+
+    # * Buscar por id do pedido ou exibir todos
+    # ! Alterar pra as funções de pedidos
+    # if id_func:
+    #     if st.session_state.search == "id":
+    #         data_func = fetch_funcionario_by_nome(id_func)
+    #         df_func = pd.DataFrame(data_func)
+    # else:
+    #     data_func = fetch_funcionario()
+    #     df_func = pd.DataFrame(data_func)
+
+    # if data_func == []:
+    #     st.error("Nenhum funcionário encontrado")
+    # else:
+    #     df_func.columns = ["CPF", "Nome", "Salário"]
+    #     st.dataframe(df_func, hide_index=True, use_container_width=True)   
+        
