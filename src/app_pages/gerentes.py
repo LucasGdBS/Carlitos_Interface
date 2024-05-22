@@ -16,11 +16,10 @@ def page_gerente():
     st.radio("Operações:", ["atribuir cargo", "deletar"], key="options", horizontal=True)
 
     
-    # cpf_func = st.text_input("CPF do gerente", key="forms_input", placeholder="cpf do gerente", label_visibility="collapsed")
     values = fetch_funcionario()
     values = [i["cpf"] for i in values]
     
-    cpf_func = st.selectbox("CPF do gerente", values, key="forms_input", placeholder="cpf do gerente", label_visibility="collapsed", index=0)
+    cpf_func = st.selectbox("CPF do gerente", values, placeholder="cpf do gerente", label_visibility="collapsed", index=0)
     selected_func = fetch_funcionario_by_cpf(cpf_func)
 
 
@@ -126,7 +125,7 @@ def page_gerente():
         st.button("Limpar", on_click=clear_input, use_container_width=True)
         
 
-    # * Buscar por nome ou exibir todos
+    # * Buscar por nome, cpf ou exibir todos
     if id_func:
         if st.session_state.search == "nome":
             data_func = fetch_gerente_by_nome(id_func)
