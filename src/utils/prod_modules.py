@@ -13,7 +13,7 @@ def fetch_produto():
         return []
 
 
-def fetch_by_id(id):
+def fetch_produto_by_id(id):
     url = f"http://localhost:8080/produtos/buscar-por-id?id={id}"
     try:
         response = requests.get(url)
@@ -25,7 +25,7 @@ def fetch_by_id(id):
         return []
 
 
-def fetch_by_nome(nome):
+def fetch_produto_by_nome(nome):
     url = f"http://localhost:8080/produtos/buscar-por-nome?nome={nome}"
     try:
         response = requests.get(url)
@@ -49,11 +49,12 @@ def fetch_produto_ingredientes(id):
         return []
 
 
-def create_produto(nome, preco):
+def create_produto(nome, preco, ingredientes):
     url = "http://localhost:8080/produtos/"
     data = {
         "nome": nome,
         "preco": preco,
+        "ingredientes": ingredientes
     }
     try:
         response = requests.post(url, json=data)
@@ -93,3 +94,9 @@ def delete_produto(id):
         return False
 
 
+def get_ingredientes(ingredientes):
+    ingredientes_list = []
+    for ingrediente in ingredientes:
+        ingredientes_list.append(ingrediente["nome"])
+    return ingredientes_list
+   

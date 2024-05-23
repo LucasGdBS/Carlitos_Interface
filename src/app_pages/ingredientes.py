@@ -178,6 +178,6 @@ def page_ingrediente():
     if data_ingred == []:
         st.error("Nenhum ingrediente encontrado")
     else:
-        #df_ingred.columns = ["CPF", "Nome", "Salário"]
+        df_ingred.columns = ["Nome", "Data de Validade", "Quantidade", "Código", "Tipo"]
         st.dataframe(df_ingred, hide_index=True, use_container_width=True)   
         
