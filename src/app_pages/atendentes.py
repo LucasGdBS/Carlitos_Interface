@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.page_modules import clear_input
 from utils.aten_modules import fetch_atendente, fetch_atendente_by_cpf, fetch_atendente_by_nome, fetch_atendente_by_geren_cpf, create_atendente, edit_atendente_by_cpf, delete_atendente
-from utils.func_modules import fetch_funcionario
+from utils.func_modules import fetch_funcionario, fetch_funcionario_by_cpf
 
 
 
@@ -23,7 +23,7 @@ def page_atendente():
 
 
     cpf_aten = st.selectbox("CPF do atendente", values, placeholder="cpf do atendente", label_visibility="collapsed", index=0)
-    selected_aten = fetch_atendente_by_cpf(cpf_aten)
+    selected_aten = fetch_funcionario_by_cpf(cpf_aten)
     
         
                 

@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.page_modules import clear_input
 from utils.moto_modules import fetch_motoqueiro, fetch_motoqueiro_by_cpf, fetch_motoqueiro_by_nome, create_motoqueiro, edit_motoqueiro_by_cpf, delete_motoqueiro
-from utils.func_modules import fetch_funcionario
+from utils.func_modules import fetch_funcionario, fetch_funcionario_by_cpf
 
 
 # * Página dos motoqueiros
@@ -22,7 +22,7 @@ def page_motoqueiro():
 
 
     cpf_moto = st.selectbox("CPF do motoqueiro", values, placeholder="cpf do motoqueiro", label_visibility="collapsed", index=0)
-    selected_moto = fetch_motoqueiro_by_cpf(cpf_moto)
+    selected_moto = fetch_funcionario_by_cpf(cpf_moto)
     
         
                 
