@@ -2,9 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.page_modules import clear_input
 from utils.func_modules import fetch_funcionario, fetch_funcionario_by_cpf, fetch_funcionario_by_nome, create_funcionario, edit_funcionario_by_cpf, delete_funcionario
-from utils.aten_modules import create_atendente
-from utils.moto_modules import create_motoqueiro
-from utils.geren_modules import create_gerente
+
 
 
 # * Página de Funcionários
@@ -36,26 +34,20 @@ def page_funcionario():
         with st.form("cadastrar_funcionario", clear_on_submit= True):
             st.subheader("Cadastrar Funcionário")
 
-            cols = st.columns(4)
+            cols = st.columns(3)
             with cols[0]:
                 cpf = st.text_input("CPF")
             with cols[1]:
                 nome = st.text_input("Nome")
             with cols[2]:
                 salario = st.text_input("Salario")
-            with cols[3]:
-                cargo = st.selectbox("Cargo", ["Funcionário", "Atendente", "Motoqueiro", "Gerente"], index=0)
-            
+    
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
-            # ! TERMINAR A TRIBUIÇÃO DOS CARGOS
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
                     new_func = create_funcionario(cpf, nome, salario)
-                    if cargo == "Atendente":
-                        new_func = create_atendente(cpf, cpf)
-                    if cargo == "Motoqueiro":
-                        new_func = create_motoqueiro(cpf, cpf)
+
                     if new_func:
                         st.toast("Funcionário cadastrado com sucesso", icon="🎉")
                     else:

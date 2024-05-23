@@ -17,15 +17,16 @@ def page_atendente():
     st.radio("Operações:", ["atribuir cargo", "editar", "deletar"], key="options", horizontal=True)
 
 
-    values = fetch_funcionario()
-    values = [i["cpf"] for i in values]
-
-
-
-    cpf_aten = st.selectbox("CPF do atendente", values, placeholder="cpf do atendente", label_visibility="collapsed", index=0)
-    selected_aten = fetch_funcionario_by_cpf(cpf_aten)
-    
-        
+    if st.session_state.options == "atribuir cargo":
+        values = fetch_funcionario()
+        values = [i["cpf"] for i in values]
+        cpf_aten = st.selectbox("CPF do funcionário", values, placeholder="cpf do funcionário", label_visibility="collapsed", index=0)
+        selected_aten = fetch_funcionario_by_cpf(cpf_aten)
+    else:
+        values = fetch_atendente()
+        values = [i["cpf"] for i in values]
+        cpf_aten = st.selectbox("CPF do atendente", values, placeholder="cpf do atendente", label_visibility="collapsed", index=0)
+        selected_aten = fetch_atendente_by_cpf(cpf_aten)
                 
 
     # * Criar Atendente
@@ -41,20 +42,22 @@ def page_atendente():
             with st.form("atribuir_cargo", clear_on_submit= True):
                 st.subheader("Atribuir Cargo de Atendente")
 
-                cols = st.columns(3)
+                cols = st.columns(4)
                 with cols[0]:
                     cpf = st.text_input("CPF",value=cpf_aten, disabled=True)
                 with cols[1]:
-                    cpf_gerente = st.text_input("CPF do Gerente")
+                    nome = st.text_input("Nome", value=selected_aten["nome"], disabled=True)
                 with cols[2]:
-                    turno =  st.radio("Turno:", ["MANHÃ", "TARDE", "NOITE"], horizontal=True)
+                    cpf_gerente = st.text_input("CPF do Gerente")
+                with cols[3]:
+                    turno =  st.radio("Turno:", ["MANHÃ", "NOITE"], horizontal=True)
                 
                 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
                 with col1:
                     if st.form_submit_button("Atribuir", use_container_width=True):
-                        new_aten = create_atendente(cpf, cpf_gerente, turno.upper())	
+                        new_aten = create_atendente(cpf, turno, cpf_gerente)
                         if new_aten:
                             st.session_state.changed = True
                             st.rerun()
@@ -77,28 +80,28 @@ def page_atendente():
 
         if selected_aten:
             with st.form("editar_atendente", clear_on_submit=True):
-                st.subheader("Editar atendente")
+                st.subheader("Editar Atendente")
     
-                cols = st.columns(3)
+                cols = st.columns(4)
                 with cols[0]:
                     cpf = st.text_input("CPF",value=cpf_aten, disabled=True)
                 with cols[1]:
-                    cpf_gerente = st.text_input("CPF do Gerente", value=selected_aten["cpf_gerente"], disabled=True)
+                    nome = st.text_input("Nome", value=selected_aten["nome"], disabled=True)
                 with cols[2]:
-                    if selected_aten["turno"] == "MANHA":
-                        ind = 0
-                    elif selected_aten["turno"] == "TARDE":
-                        ind = 1
-                    else:
-                        ind = 2
-                    turno = st.radio("Turno:", ["MANHÃ", "TARDE", "NOITE"], index=ind, horizontal=True)
+                    cpf_gerente = st.text_input("CPF do Gerente", value=selected_aten["cpf_gerente"], disabled=True)
+                with cols[3]:
+                    if selected_aten["turno"] == "MANHÃ":
+                        turno = st.radio("Turno:", ["MANHÃ", "NOITE"], index=0, horizontal=True)
+                    elif selected_aten["turno"] == "NOITE":
+                        turno = st.radio("Turno:", ["MANHÃ", "NOITE"], index=1, horizontal=True)
+                    
                 
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
-                        edit_moto = edit_atendente_by_cpf(cpf, turno.upper())
-                        if edit_moto:
+                        edit_aten = edit_atendente_by_cpf(cpf, turno)
+                        if edit_aten:
                             st.session_state.changed = True
                             st.rerun()
                         else:
@@ -125,21 +128,21 @@ def page_atendente():
 
         if selected_aten:
             with st.form("deletar_atendente", clear_on_submit=True):
-                st.subheader("Deletar atendente")
+                st.subheader("Deletar Atendente")
 
-                cols = st.columns(3)
+                cols = st.columns(4)
                 with cols[0]:
                     cpf = st.text_input("CPF", value=cpf_aten, disabled=True)
                 with cols[1]:
-                    cpf_gerente = st.text_input("CPF do Gerente", value=selected_aten["cpf_gerente"], disabled=True)
+                    nome = st.text_input("Nome", value=selected_aten["nome"], disabled=True)
                 with cols[2]:
-                    if selected_aten["turno"] == "MANHA":
+                    cpf_gerente = st.text_input("CPF do Gerente", value=selected_aten["cpf_gerente"], disabled=True)
+                with cols[3]:
+                    if selected_aten["turno"] == "MANHÃ":
                         ind = 0
-                    elif selected_aten["turno"] == "TARDE":
+                    elif selected_aten["turno"] == "NOITE":
                         ind = 1
-                    else:
-                        ind = 2
-                    turno = st.radio("Turno:", ["Manhã", "Tarde", "Noite"], index=ind, horizontal=True, disabled=True)
+                    turno = st.radio("Turno:", ["MANHÃ", "NOITE"], index=ind, horizontal=True, disabled=True)
 
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
@@ -198,6 +201,6 @@ def page_atendente():
     if data_aten == []:
         st.error("Nenhum atendente encontrado")
     else:
-        #df_aten.columns = ["CPF", "Nome", "Salário", "Turno", "CPF Gerente", "Nome Gerente"]
+        df_aten.columns = ["CPF", "Nome", "Salário", "Turno", "CPF Gerente", "Nome Gerente"]
         st.dataframe(df_aten, hide_index=True, use_container_width=True)   
         

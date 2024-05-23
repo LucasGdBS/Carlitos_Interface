@@ -15,15 +15,16 @@ def page_motoqueiro():
         st.session_state.options = "atribuir cargo"
     st.radio("Operações:", ["atribuir cargo", "editar", "deletar"], key="options", horizontal=True)
 
-
-    values = fetch_funcionario()
-    values = [i["cpf"] for i in values]
-
-
-
-    cpf_moto = st.selectbox("CPF do motoqueiro", values, placeholder="cpf do motoqueiro", label_visibility="collapsed", index=0)
-    selected_moto = fetch_funcionario_by_cpf(cpf_moto)
-    
+    if st.session_state.options == "atribuir cargo":
+        values = fetch_funcionario()
+        values = [i["cpf"] for i in values]
+        cpf_moto = st.selectbox("CPF do motoqueiro", values, placeholder="cpf do motoqueiro", label_visibility="collapsed", index=0)
+        selected_moto = fetch_funcionario_by_cpf(cpf_moto)
+    else:
+        values = fetch_motoqueiro()
+        values = [i["cpf"] for i in values]
+        cpf_moto = st.selectbox("CPF do motoqueiro", values, placeholder="cpf do motoqueiro", label_visibility="collapsed", index=0)
+        selected_moto = fetch_motoqueiro_by_cpf(cpf_moto)
         
                 
 
@@ -40,10 +41,12 @@ def page_motoqueiro():
             with st.form("atribuir_cargo", clear_on_submit= True):
                 st.subheader("Atribuir Cargo de Motoqueiro")
 
-                cols = st.columns(2)
+                cols = st.columns(3)
                 with cols[0]:
                     cpf = st.text_input("CPF",value=cpf_moto, disabled=True)
                 with cols[1]:
+                    nome = st.text_input("Nome", value=selected_moto["nome"], disabled=True)
+                with cols[2]:
                     cpf_gerente = st.text_input("CPF do Gerente")
                 
                 
@@ -76,10 +79,12 @@ def page_motoqueiro():
             with st.form("editar_motoqueiro", clear_on_submit=True):
                 st.subheader("Editar Motoqueiro")
     
-                cols = st.columns(2)
+                cols = st.columns(3)
                 with cols[0]:
                     cpf = st.text_input("CPF",value=cpf_moto, disabled=True)
                 with cols[1]:
+                    nome = st.text_input("Nome", value=selected_moto["nome"])
+                with cols[2]:
                     cpf_gerente = st.text_input("CPF do Gerente", value=selected_moto["gerenteMotoqueiro_cpf"])
       
                 
@@ -117,10 +122,12 @@ def page_motoqueiro():
             with st.form("deletar_motoqueiro", clear_on_submit=True):
                 st.subheader("Deletar Motoqueiro")
 
-                cols = st.columns(2)
+                cols = st.columns(3)
                 with cols[0]:
                     cpf = st.text_input("CPF", value=cpf_moto, disabled=True)
                 with cols[1]:
+                    nome = st.text_input("Nome", value=selected_moto["nome"], disabled=True)
+                with cols[2]:
                     cpf_gerente = st.text_input("CPF do Gerente", value=selected_moto["gerenteMotoqueiro_cpf"], disabled=True)
                 
 

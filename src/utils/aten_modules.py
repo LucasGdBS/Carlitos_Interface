@@ -52,12 +52,12 @@ def fetch_atendente_by_geren_cpf(cpf):
         return []
 
 
-def create_atendente(cpf, cpf_gerente, turno):
+def create_atendente(cpf, turno, cpf_gerente):
     url = "http://localhost:8080/atendentes/"
     data = {
         "cpf": cpf,
-        "gpf_gerente": cpf_gerente,
-        "turno": turno
+        "turno": turno,
+        "cpf_gerente": cpf_gerente
     }
     try:
         response = requests.post(url, json=data)
@@ -69,8 +69,9 @@ def create_atendente(cpf, cpf_gerente, turno):
         return False
 
 
+
 def edit_atendente_by_cpf(cpf, turno):
-    url = f"http://localhost:8080/atendentes/{cpf}"
+    url = f"http://localhost:8080/atendentes/editar-por-cpf/{cpf}"
     data = {
         "turno": turno
     }
