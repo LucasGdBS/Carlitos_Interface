@@ -6,7 +6,7 @@ from st_on_hover_tabs import on_hover_tabs as ht
 # App pages
 import app_pages.funcionarios as func
 import app_pages.clientes as clien
-import app_pages.alimentos as alim
+import app_pages.ingredientes as ingred
 import app_pages.pedidos as pedi
 import app_pages.atendentes as aten
 import app_pages.motoqueiros as moto
@@ -48,7 +48,7 @@ def app(page):
 
     elif tabs == 'Alimentos':
         cfg.set_page(5, page)
-        alim.page_alimento()
+        ingred.page_alimento()
 
     elif tabs == 'Pedidos':
         cfg.set_page(6, page)

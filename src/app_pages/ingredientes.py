@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 
 
-def page_alimento():
-    st.title("🍔 Alimentos")
+def page_ingrediente():
+    st.title("🍔 Ingredientes")
     st.markdown("<br>", unsafe_allow_html=True)
     
     with st.form("cadastro_alimento", clear_on_submit=True):
