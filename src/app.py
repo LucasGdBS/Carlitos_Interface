@@ -16,16 +16,14 @@ import app_pages.gerentes as geren
 from config import config as cfg
 
 
-
-
 def app(page):
     st.set_page_config(layout="wide")
     st.markdown('<style>' + open('./assets/style.css').read() + '</style>', unsafe_allow_html=True)
 
 
     with st.sidebar:    
-        tabs = ht (tabName=['Funcionarios', 'Atendentes', 'Motoqueiros', 'Gerentes', 'Clientes', 'Alimentos', 'Pedidos'], 
-                            iconName=['👨‍💼', '☎️', '🏍️', '‍💼', '🧑', '🍔', '🧾'], default_choice=page)
+        tabs = ht (tabName=['Funcionarios', 'Atendentes', 'Motoqueiros', 'Gerentes', 'Clientes', 'Ingredientes', 'Pedidos'], 
+                            iconName=['👨‍💼', '☎️', '🏍️', '‍💼', '🧑', '🥦', '🧾'], default_choice=page)
     if tabs =='Funcionarios':
         cfg.set_page(0, page)
         func.page_funcionario()
@@ -46,9 +44,9 @@ def app(page):
         cfg.set_page(4, page)
         clien.page_cliente()
 
-    elif tabs == 'Alimentos':
+    elif tabs == 'Ingredientes':
         cfg.set_page(5, page)
-        ingred.page_alimento()
+        ingred.page_ingrediente()
 
     elif tabs == 'Pedidos':
         cfg.set_page(6, page)

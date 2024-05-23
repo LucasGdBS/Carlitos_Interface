@@ -16,11 +16,16 @@ def page_gerente():
     st.radio("Operações:", ["atribuir cargo", "deletar"], key="options", horizontal=True)
 
     
-    values = fetch_funcionario()
-    values = [i["cpf"] for i in values]
-    
-    cpf_func = st.selectbox("CPF do gerente", values, placeholder="cpf do gerente", label_visibility="collapsed", index=0)
-    selected_func = fetch_funcionario_by_cpf(cpf_func)
+    if st.session_state.options == "atribuir cargo":
+        values = fetch_funcionario()
+        values = [i["cpf"] for i in values]
+        cpf_func = st.selectbox("CPF do funcionário", values, placeholder="cpf do funcionário", label_visibility="collapsed", index=0)
+        selected_func = fetch_funcionario_by_cpf(cpf_func)
+    else:
+        values = fetch_gerente()
+        values = [i["cpf"] for i in values]
+        cpf_func = st.selectbox("CPF do gerente", values, placeholder="cpf do gerente", label_visibility="collapsed", index=0)
+        selected_func = fetch_gerente_by_cpf(cpf_func)
 
 
             
