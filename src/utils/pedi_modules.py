@@ -50,7 +50,7 @@ def fetch_pedido_resumo(id_pedido):
         return []
 
 
-def fetch_pedido_by_cliente(nome_atendente):
+def fetch_pedido_resumo_by_atendente(nome_atendente):
     url = f"http://localhost:8080/pedidos/resumo?nome={nome_atendente}"
     try:
         response = requests.get(url)
