@@ -13,14 +13,15 @@ def page_dashboard():
     st.title("📊 Dashboard")
     st.markdown("<br>", unsafe_allow_html=True)
 
-    if "options" not in st.session_state:
-        st.session_state.options = "faturamento"
-    st.radio("Categoria:", ["faturamento", "funcionários", "produtos", "clientes"], key="options", horizontal=True)
 
+    if "options" not in st.session_state:
+        st.session_state.options = "Faturamento"
+    st.radio("Categorias:", ["Faturamento", "Funcionários", "Produtos", "Clientes"], key="options", horizontal=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
 
     # * Faturamento
-    if st.session_state.options == "faturamento":
+    if st.session_state.options == "Faturamento":
         st.subheader("Faturamento Anual")
         fat_anual =  faturamento_anual()
         chart_anual = pd.DataFrame(fat_anual)
@@ -61,7 +62,7 @@ def page_dashboard():
 
 
     # * Funcionários
-    elif st.session_state.options == "funcionários":
+    elif st.session_state.options == "Funcionários":
         st.subheader("Atendentes com Mais Vendas")
         atendentes_vendas = atendentes_mais_vendas()
         chart_atendentes_vendas = pd.DataFrame(atendentes_vendas)
@@ -86,7 +87,7 @@ def page_dashboard():
 
 
     # * Produtos
-    elif st.session_state.options == "produtos":
+    elif st.session_state.options == "Produtos":
         st.subheader("Produtos Mais Vendidos")
         prod_vend = produtos_vendidos()
         chart_prod_vend = pd.DataFrame(prod_vend)
@@ -119,7 +120,7 @@ def page_dashboard():
 
 
     # * Clientes
-    elif st.session_state.options == "clientes":
+    elif st.session_state.options == "Clientes":
         st.subheader("Clientes por Bairro")
         clien_bairro = clientes_bairro()
         chart_clien_bairro = pd.DataFrame(clien_bairro)

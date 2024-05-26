@@ -67,7 +67,7 @@ def page_produto():
             st.session_state.changed = False
         if st.session_state.changed:
             st.session_state.changed = False
-            st.toast("produto editado com sucesso", icon="🎉")
+            st.toast("Produto editado com sucesso", icon="🎉")
 
 
         if selected_prod:
@@ -97,7 +97,7 @@ def page_produto():
                         pass
 
         elif selected_prod == [] and id_prod != "":
-            st.toast("produto não encontrado", icon="⚠️")
+            st.toast("Produto não encontrado", icon="⚠️")
 
 
 
@@ -109,7 +109,7 @@ def page_produto():
         if st.session_state.deleted:
             st.session_state.deleted = False
 
-            st.toast("produto deletado com sucesso", icon="🎉")
+            st.toast("Produto deletado com sucesso", icon="🎉")
         
 
         if selected_prod:
@@ -137,12 +137,12 @@ def page_produto():
                     if st.form_submit_button("Cancelar",type='primary', use_container_width=True):
                         pass
         elif selected_prod == [] and id_prod != "" and st.session_state.deleted == True:
-            st.toast("produto não encontrado", icon="⚠️")                
+            st.toast("Produto não encontrado", icon="⚠️")                
 
 
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.subheader("Lista de produtos")
+    st.subheader("Lista de Produtos")
 
 
     if "search" not in st.session_state:
