@@ -48,10 +48,10 @@ def page_funcionario():
                 if st.form_submit_button("Cadastrar", use_container_width=True):
                     new_func = create_funcionario(cpf, nome, salario)
 
-                    if new_func:
+                    if new_func == True:
                         st.toast("Funcionário cadastrado com sucesso", icon="🎉")
                     else:
-                        st.toast("Erro ao cadastrar funcionário", icon="⚠️")
+                        st.toast(new_func, icon="⚠️")
             with col2:
                 if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                     pass
@@ -83,11 +83,11 @@ def page_funcionario():
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
                         edit_func = edit_funcionario_by_cpf(cpf, nome, salario)
-                        if edit_func:
+                        if edit_func == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao editar funcionário", icon="⚠️")
+                            st.toast(edit_func, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass
@@ -126,11 +126,11 @@ def page_funcionario():
                 with col1:
                     if st.form_submit_button("Deletar", use_container_width=True):
                         delete_func = delete_funcionario(cpf)
-                        if delete_func:
+                        if delete_func == True:
                             st.session_state.deleted = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao deletar funcionário", icon="⚠️")
+                            st.toast(delete_func, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar",type='primary', use_container_width=True):
                         pass
