@@ -176,6 +176,6 @@ def page_produto():
     if data_prod == []:
         st.error("Nenhum produto encontrado")
     else:
-        df_prod.columns = ["Código", "Nome", "Preço", "Ingredientes"]
+        df_prod.columns = ["Código", "Nome", "Preço(R$)", "Ingredientes"]
         st.dataframe(df_prod, hide_index=True, use_container_width=True)   
         

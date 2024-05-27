@@ -201,6 +201,6 @@ def page_atendente():
     if data_aten == []:
         st.error("Nenhum atendente encontrado")
     else:
-        df_aten.columns = ["CPF", "Nome", "Salário", "Turno", "CPF Gerente", "Nome Gerente"]
+        df_aten.columns = ["CPF", "Nome", "Salário(R$)", "Turno", "CPF Gerente", "Nome Gerente"]
         st.dataframe(df_aten, hide_index=True, use_container_width=True)   
         

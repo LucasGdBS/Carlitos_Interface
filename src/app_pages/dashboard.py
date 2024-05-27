@@ -29,8 +29,8 @@ def page_dashboard():
             st.warning("Não há dados disponíveis para exibição")
         else:  
             chart_anual = pd.DataFrame(fat_anual)
-            chart_anual.columns = ["Ano", "Faturamento"]
-            fig = px.bar(chart_anual, x="Ano", y="Faturamento", color="Faturamento", color_continuous_scale="Inferno")
+            chart_anual.columns = ["Ano", "Faturamento(R$)"]
+            fig = px.bar(chart_anual, x="Ano", y="Faturamento(R$)", color="Faturamento(R$)", color_continuous_scale="Inferno")
             fig.update_layout(xaxis_type='category')
             st.plotly_chart(fig, use_container_width=True)
 
@@ -45,9 +45,9 @@ def page_dashboard():
             else:
                 media = [i["faturamento_mensal"] for i in fat_mensal]
                 chart_mensal = pd.DataFrame(fat_mensal)
-                chart_mensal.columns = ["Mês", "Faturamento"]
+                chart_mensal.columns = ["Mês", "Faturamento(R$)"]
 
-                fig = px.line(chart_mensal, x="Mês", y="Faturamento")
+                fig = px.line(chart_mensal, x="Mês", y="Faturamento(R$)")
                 fig.add_hline(y=np.mean(media),  line_color="white", annotation_text="Média", annotation_position="top right", line_dash="dash")
                 fig.update_traces(line=dict(color='#FF8B1F'))
                 st.plotly_chart(fig, use_container_width=True)
@@ -62,9 +62,9 @@ def page_dashboard():
             else:
                 media = [i["faturamento_diario"] for i in fat_diario]
                 chart_diario = pd.DataFrame(fat_diario)
-                chart_diario.columns = ["Dia", "Faturamento"]
+                chart_diario.columns = ["Dia", "Faturamento(R$)"]
 
-                fig = px.line(chart_diario, x="Dia", y="Faturamento")
+                fig = px.line(chart_diario, x="Dia", y="Faturamento(R$)")
                 fig.add_hline(y=np.mean(media),  line_color="white", annotation_text="Média", annotation_position="top right", line_dash="dash")
                 fig.update_traces(line=dict(color='#FF8B1F'))
                 st.plotly_chart(fig, use_container_width=True)
@@ -93,8 +93,8 @@ def page_dashboard():
             st.warning("Não há dados disponíveis para exibição")
         else:
             chart_salario_media = pd.DataFrame(salario_media)
-            chart_salario_media.columns = ["Funcionário", "Salário"]
-            fig = px.bar(chart_salario_media, y="Salário", x="Funcionário", color="Salário", color_continuous_scale="Inferno")     
+            chart_salario_media.columns = ["Funcionário", "Salário(R$)"]
+            fig = px.bar(chart_salario_media, y="Salário(R$)", x="Funcionário", color="Salário(R$)", color_continuous_scale="Inferno")     
 
             funcionarios = fetch_funcionario()
             media = [i["salario"] for i in funcionarios]

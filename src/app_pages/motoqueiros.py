@@ -184,6 +184,6 @@ def page_motoqueiro():
     if data_moto == []:
         st.error("Nenhum Motoqueiro encontrado")
     else:
-        df_moto.columns = ["CPF", "Nome", "Salário", "CPF Gerente", "Nome Gerente"]
+        df_moto.columns = ["CPF", "Nome", "Salário(R$)", "CPF Gerente", "Nome Gerente"]
         st.dataframe(df_moto, hide_index=True, use_container_width=True)   
         

@@ -83,6 +83,7 @@ def page_pedido():
 
                 info_pedido = fetch_pedido_resumo(id_pedido)
                 info_pedido_df = pd.DataFrame([info_pedido])
+                info_pedido_df.columns = ["Número do Pedido", "Valor Total(R$)", "Nome do Cliente", "Produtos"]
                 st.dataframe(info_pedido_df, hide_index=True, use_container_width=True)
 
 
@@ -104,8 +105,9 @@ def page_pedido():
             st.toast("Pedido não encontrado", icon="⚠️")       
     
 
-    # * Listar dos pedidos
 
+
+    # * Listar os pedidos
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("Lista de Pedidos")
 
@@ -148,7 +150,7 @@ def page_pedido():
         if data_pedido == []:
             st.error("Nenhum pedido encontrado")
         else:
-            df_pedido.columns = ["Código Nota Fiscal", "Número do Pedido", "ID do Cliente", "Nome do Cliente", "ID do Produto", "Nome do Produto", "CPF do Atendente", "Valor Total", "Valor sem Desconto", "Desconto R$", "Data do Pedido", "Forma de Pagamento", "Taxa de Entrega", "Desconto %", "Quantidade do Produto"]
+            df_pedido.columns = ["Código Nota Fiscal", "Número do Pedido", "ID do Cliente", "Nome do Cliente", "ID do Produto", "Nome do Produto", "CPF do Atendente", "Valor Total(R$)", "Valor sem Desconto", "Desconto(R$)", "Data do Pedido", "Forma de Pagamento", "Taxa de Entrega(R$)", "Desconto(%)", "Quantidade do Produto"]
             st.dataframe(df_pedido, hide_index=True, use_container_width=True)
 
 
@@ -166,7 +168,7 @@ def page_pedido():
             if data_pedido == []:
                 st.error("Nenhum pedido encontrado")
             else:
-                df_pedido.columns = ["Número do Pedido", "Valor Total", "Nome do Cliente", "Produtos"]
+                df_pedido.columns = ["Número do Pedido", "Valor Total(R$)", "Nome do Cliente", "Produtos"]
                 st.dataframe(df_pedido, hide_index=True, use_container_width=True)
         else:
             st.warning(f"Digite o {st.session_state.search} do pedido para exibir os resultados")

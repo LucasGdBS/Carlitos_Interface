@@ -145,6 +145,6 @@ def page_gerente():
     if data_func == []:
         st.error("Nenhum funcionário encontrado")
     else:
-        df_func.columns = ["CPF", "Nome", "Salário"]
+        df_func.columns = ["CPF", "Nome", "Salário(R$)"]
         st.dataframe(df_func, hide_index=True, use_container_width=True)   
         
