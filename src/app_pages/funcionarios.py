@@ -126,11 +126,11 @@ def page_funcionario():
                 with col1:
                     if st.form_submit_button("Deletar", use_container_width=True):
                         delete_func = delete_funcionario(cpf)
-                        if delete_func == True:
+                        if delete_func:
                             st.session_state.deleted = True
                             st.rerun()
                         else:
-                            st.toast(delete_func, icon="⚠️")
+                            st.toast("Erro ao deletar funcionário", icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar",type='primary', use_container_width=True):
                         pass

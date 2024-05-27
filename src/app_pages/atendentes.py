@@ -58,11 +58,11 @@ def page_atendente():
                 with col1:
                     if st.form_submit_button("Atribuir", use_container_width=True):
                         new_aten = create_atendente(cpf, turno, cpf_gerente)
-                        if new_aten:
+                        if new_aten == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao atribuir cargo", icon="⚠️")
+                            st.toast(new_aten, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass
@@ -101,11 +101,11 @@ def page_atendente():
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
                         edit_aten = edit_atendente_by_cpf(cpf, turno)
-                        if edit_aten:
+                        if edit_aten == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao editar atendente", icon="⚠️")
+                            st.toast(edit_aten, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass

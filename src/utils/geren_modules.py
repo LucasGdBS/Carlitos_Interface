@@ -52,7 +52,7 @@ def create_gerente(cpf):
         if response.status_code == 201:
             return True
         else:
-            return False
+            return response.text
     except Exception:
         return False
 

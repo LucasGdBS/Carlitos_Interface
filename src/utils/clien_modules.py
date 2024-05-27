@@ -56,7 +56,7 @@ def create_cliente(nome, telefone_1, telefone_2, complemento, rua, bairro, numer
         if response.status_code == 201:
             return True
         else:
-            return False
+            return response.text
     except Exception:
         return False
 
@@ -78,7 +78,7 @@ def edit_cliente(tel, nome, telefone_1, telefone_2, complemento, rua, bairro, nu
         if response.status_code == 200:
             return True
         else:
-            return False
+            return response.text
     except Exception:
         return False
 

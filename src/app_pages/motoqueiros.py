@@ -55,11 +55,11 @@ def page_motoqueiro():
                 with col1:
                     if st.form_submit_button("Atribuir", use_container_width=True):
                         new_moto = create_motoqueiro(cpf, cpf_gerente)	
-                        if new_moto:
+                        if new_moto == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao atribuir cargo", icon="⚠️")
+                            st.toast(new_moto, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass
@@ -93,11 +93,11 @@ def page_motoqueiro():
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
                         edit_moto = edit_motoqueiro_by_cpf(cpf, cpf_gerente)
-                        if edit_moto:
+                        if edit_moto == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao editar motoqueiro", icon="⚠️")
+                            st.toast(edit_moto, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass

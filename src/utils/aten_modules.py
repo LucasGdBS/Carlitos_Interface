@@ -64,7 +64,7 @@ def create_atendente(cpf, turno, cpf_gerente):
         if response.status_code == 201:
             return True
         else:
-            return False
+            return response.text
     except Exception:
         return False
 
@@ -80,7 +80,7 @@ def edit_atendente_by_cpf(cpf, turno):
         if response.status_code == 200:
             return True
         else:
-            return False
+            return response.text
     except Exception:
         return False
 

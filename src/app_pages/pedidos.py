@@ -55,10 +55,10 @@ def page_pedido():
                 if st.form_submit_button("Cadastrar", use_container_width=True):
                     new_pedido = create_pedido(cod_nota, num_pedido, id_pedido, id_produto, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto)
 
-                    if new_pedido:
+                    if new_pedido == True:
                         st.toast("Pedido cadastrado com sucesso", icon="🎉")
                     else:
-                        st.toast("Erro ao cadastrar pedido", icon="⚠️")
+                        st.toast(new_pedido, icon="⚠️")
             with col2:
                 if st.form_submit_button("Cancelar", type='primary', use_container_width=True):
                     pass

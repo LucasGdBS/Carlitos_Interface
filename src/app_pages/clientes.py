@@ -53,10 +53,10 @@ def page_cliente():
                 if st.form_submit_button("Cadastrar", use_container_width=True):
                     new_clien = create_cliente(nome, telefone_1, telefone_2, complemento, rua, bairro, numero, cep)
 
-                    if new_clien:
+                    if new_clien == True:
                         st.toast("Cliente cadastrado com sucesso", icon="🎉")
                     else:
-                        st.toast("Erro ao cadastrar cliente", icon="⚠️")
+                        st.toast(new_clien, icon="⚠️")
             with col2:
                 if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                     pass
@@ -95,11 +95,11 @@ def page_cliente():
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
                         edit_clien = edit_cliente(telefone_1, nome, telefone_1, telefone_2, complemento, rua, bairro, numero, cep)
-                        if edit_clien:
+                        if edit_clien == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao editar cliente", icon="⚠️")
+                            st.toast(edit_clien, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass

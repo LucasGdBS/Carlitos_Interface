@@ -54,11 +54,11 @@ def page_gerente():
                 with col1:
                     if st.form_submit_button("Atribuir", use_container_width=True):
                         edit_func = create_gerente(cpf)
-                        if edit_func:
+                        if edit_func == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao atribuir cargo", icon="⚠️")
+                            st.toast(edit_func, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass

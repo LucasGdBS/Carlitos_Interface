@@ -51,10 +51,10 @@ def page_produto():
                     lista_ingredientes = ingredientes.split(", ")
                     new_prod = create_produto(nome, preco, lista_ingredientes)
 
-                    if new_prod:
+                    if new_prod == True:
                         st.toast("Produto cadastrado com sucesso", icon="🎉")
                     else:
-                        st.toast("Erro ao cadastrar produto", icon="⚠️")
+                        st.toast(new_prod, icon="⚠️")
             with col2:
                 if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                     pass
@@ -87,11 +87,11 @@ def page_produto():
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
                         edit_ingred = edit_produto(codigo, nome, preco)
-                        if edit_ingred:
+                        if edit_ingred == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao editar produto", icon="⚠️")
+                            st.toast(edit_ingred, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass

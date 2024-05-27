@@ -50,10 +50,10 @@ def page_ingrediente():
                 if st.form_submit_button("Cadastrar", use_container_width=True):
                     new_ingred = create_ingrediente(nome, dt_validade, quantidade, codigo, tipo)
 
-                    if new_ingred:
+                    if new_ingred == True:
                         st.toast("Ingrediente cadastrado com sucesso", icon="🎉")
                     else:
-                        st.toast("Erro ao cadastrar ingrediente", icon="⚠️")
+                        st.toast(new_ingred, icon="⚠️")
             with col2:
                 if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                     pass
@@ -87,11 +87,11 @@ def page_ingrediente():
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
                         edit_ingred = edit_ingrediente_by_id(id_ingred, nome, dt_validade, quantidade, codigo, tipo)
-                        if edit_ingred:
+                        if edit_ingred == True:
                             st.session_state.changed = True
                             st.rerun()
                         else:
-                            st.toast("Erro ao editar ingrediente", icon="⚠️")
+                            st.toast(edit_ingred, icon="⚠️")
                 with col2:
                     if st.form_submit_button("Cancelar", type="primary", use_container_width=True):
                         pass

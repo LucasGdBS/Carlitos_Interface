@@ -81,7 +81,7 @@ def create_pedido(cod_nota, num_pedido, id_cliente, id_produto, cpf_atendente, d
         if response.status_code == 201:
             return True
         else:
-            return False
+            return response.text
     except Exception:
         return False
 

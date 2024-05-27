@@ -49,10 +49,8 @@ def create_funcionario(cpf, nome, salario):
         response = requests.post(url, json=data)
         if response.status_code == 201:
             return True
-        elif response.status_code == 400:
-            return "Chave duplicada"
         else:
-            return "Erro ao criar funcionário"
+            return response.text
     except Exception:
         return False
 
@@ -67,12 +65,8 @@ def edit_funcionario_by_cpf(cpf, nome, salario):
         response = requests.put(url, json=data)
         if response.status_code == 200:
             return True
-        elif response.status_code == 400:
-            return "Chave duplicada"
-        elif response.status_code == 404:
-            return "Funcionário não encontrado"
         else:
-            return "Erro ao editar funcionário"
+            return response.text
         
     except Exception:
         return False
@@ -83,9 +77,7 @@ def delete_funcionario(cpf):
         response = requests.delete(url)
         if response.status_code == 200:
             return True
-        elif response.status_code == 404:
-            return "Funcionário não encontrado"
         else:
-            return "Erro ao deletar funcionário"
+            return False
     except Exception:
         return False
