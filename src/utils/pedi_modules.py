@@ -2,6 +2,7 @@
 import requests
 import pandas as pd
 from utils.clien_modules import fetch_cliente_by_telefone
+from utils.prod_modules import fetch_produto_by_nome
 
 def fetch_pedido():
     url = "http://localhost:8080/pedidos/"
@@ -64,37 +65,40 @@ def fetch_pedido_resumo_by_atendente(nome_atendente):
         return []
 
 
-def create_pedido(cod_nota, num_pedido, tel_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input):
+def create_pedido(cod_nota, num_pedido, tel_cliente, nome_produtos, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_produtos):
 
     id_cliente = int(fetch_cliente_by_telefone(tel_cliente)["id_cliente"])
-    ids_produtos = [int(n.strip()) for n in id_input.split(",")]
-    qntds_produtos = [int(n.strip()) for n in qntd_input.split(",")]
+    id_produtos= []
+    for i in nome_produtos:
+        produto = fetch_produto_by_nome(i)[0]["id_produto"]
+        id_produtos.append(produto)
+    # qntds_produtos = [int(n.strip()) for n in qntd_input.split(",")]
 
     check = 0
 
     url = "http://localhost:8080/pedidos/"
 
-    for i in range(len(ids_produtos)):
+    for i in range(len(id_produtos)):
         data = {
             "codigoNotalFiscal": cod_nota,
             "numeroPedido": num_pedido,
             "idCliente": id_cliente,
-            "produtoId": ids_produtos[i],
+            "produtoId": id_produtos[i],
             "atendenteCpf": cpf_atendente,
             "dtPedido": dt_pedido,
             "formaPagamento": forma_pagamento,
             "taxaEntrega": taxa_entrega,
             "desconto": desconto,
-            "qntProduto": qntds_produtos[i]
+            "qntProduto": qntd_produtos[i]
         }
 
         response = requests.post(url, json=data)
         if response.status_code == 201:
             check += 1
         else:
-            return f"{ids_produtos[i]}: {response.text}"
+            return f"{id_produtos[i]}: {response.text}"
 
-    if check == len(ids_produtos):
+    if check == len(id_produtos):
         return True
 
 

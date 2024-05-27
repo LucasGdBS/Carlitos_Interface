@@ -36,19 +36,18 @@ def page_ingrediente():
 
             cols = st.columns(2)
             with cols[0]:
-                codigo = st.number_input("Código", step=1)
                 nome = st.text_input("Nome")
-                tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], horizontal=True)
+                dt_validade = st.text_input("Data de Validade", placeholder="aaaa-mm-dd")
             with cols[1]:
                 quantidade = st.number_input("Quantidade", step=1)
-                dt_validade = st.text_input("Data de Validade", placeholder="aaaa-mm-dd")
+                tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], horizontal=True)
                 
     
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
-                    new_ingred = create_ingrediente(nome, dt_validade, quantidade, codigo, tipo)
+                    new_ingred = create_ingrediente(nome, dt_validade, quantidade, tipo)
 
                     if new_ingred == True:
                         st.toast("Ingrediente cadastrado com sucesso", icon="🎉")

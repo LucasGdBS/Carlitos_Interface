@@ -3,6 +3,7 @@ import pandas as pd
 from utils.page_modules import clear_input
 from utils.pedi_modules import fetch_pedido, fetch_pedido_by_id, fetch_pedido_by_name, fetch_pedido_resumo, fetch_pedido_resumo_by_atendente, create_pedido,  delete_pedido
 from utils.clien_modules import fetch_cliente
+from utils.prod_modules import fetch_produto
 from datetime import datetime
 
 
@@ -40,22 +41,25 @@ def page_pedido():
     telefones = fetch_cliente()
     telefones = [i["telefone_1"] for i in telefones] + [i["telefone_2"] for i in telefones]
     
-
+    values = fetch_produto()
+    values = pd.DataFrame(values, columns=["nome"])
     
+
+
     # * Criar pedido
     if st.session_state.options == "cadastrar":
-        with st.form("cadastrar_pedido", clear_on_submit= False):
+        with st.form("cadastrar_pedido", clear_on_submit=True):
             st.subheader("Cadastrar Pedido")
 
             cols = st.columns(2)
             with cols[0]:
                 tel_cliente = st.selectbox("Telefone do Cliente", telefones)
-                id_input = st.text_input("IDs dos Produtos", placeholder="Ex: 1, 2, 3") 
+                nome_produtos = st.multiselect("Produtos", values)
                 taxa_entrega = st.number_input("Taxa de Entrega")
                 desconto = st.number_input("Desconto")
             with cols[1]:
                 cpf_atendente = st.text_input("CPF do Atendente")
-                qntd_input = st.text_input("Quantidades dos Produtos", placeholder="Ex: 1, 2, 3")
+                qntd_input = st.multiselect("Quantidade dos Produtos", options=[int(i) for i in range(1, 100)])
                 forma_pagamento = st.radio("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"], horizontal=True)
                 
             
@@ -64,7 +68,7 @@ def page_pedido():
 
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
-                    new_pedido = create_pedido(count_cod_nota, count_num_pedido, tel_cliente, id_input, cpf_atendente, data_hoje, forma_pagamento, taxa_entrega, desconto, qntd_input)
+                    new_pedido = create_pedido(count_cod_nota, count_num_pedido, tel_cliente, nome_produtos, cpf_atendente, data_hoje, forma_pagamento, taxa_entrega, desconto, qntd_input)
 
                     if new_pedido == True:
                         st.toast(f"Pedido {count_num_pedido} cadastrado com sucesso", icon="🎉")
@@ -83,7 +87,6 @@ def page_pedido():
             st.session_state.deleted = False
         if st.session_state.deleted:
             st.session_state.deleted = False
-
             st.toast("Pedido deletado com sucesso", icon="🎉")
         
 
@@ -93,9 +96,12 @@ def page_pedido():
 
 
                 info_pedido = fetch_pedido_resumo(id_pedido)
-                info_pedido_df = pd.DataFrame([info_pedido])
-                info_pedido_df.columns = ["Número do Pedido", "Valor Total(R$)", "Nome do Cliente", "Produtos"]
-                st.dataframe(info_pedido_df, hide_index=True, use_container_width=True)
+                if info_pedido == []:
+                    st.error("Pedido não encontrado")
+                else:
+                    info_pedido_df = pd.DataFrame([info_pedido])
+                    info_pedido_df.columns = ["Número do Pedido", "Valor Total(R$)", "Nome do Cliente", "Produtos"]
+                    st.dataframe(info_pedido_df, hide_index=True, use_container_width=True)
 
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
@@ -103,7 +109,7 @@ def page_pedido():
                 with col1:
                     if st.form_submit_button("Deletar", use_container_width=True):
                         delete_clien = delete_pedido(id_pedido)
-                        if delete_clien:
+                        if delete_clien == True:
                             st.session_state.deleted = True
                             st.rerun()
                         else:

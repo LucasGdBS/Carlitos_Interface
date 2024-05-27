@@ -37,13 +37,12 @@ def fetch_ingrediente_by_nome(nome):
         return []
 
 
-def create_ingrediente(nome, dt_val, qntd, cod, tipo):
+def create_ingrediente(nome, dt_val, qntd, tipo):
     url = "http://localhost:8080/ingredientes/"
     data = {
         "nome": nome,
         "dtValidade": dt_val,
         "quantidade": qntd,
-        "codigo": cod,
         "tipoAlimento": tipo
     }
     try:

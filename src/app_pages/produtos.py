@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.page_modules import clear_input
 from utils.prod_modules import fetch_produto, fetch_produto_by_id, fetch_produto_by_nome, create_produto, edit_produto, delete_produto
-
+from utils.ingred_modules import fetch_ingrediente, fetch_ingrediente_by_id
 
 
 # * Página de Produtos
@@ -27,29 +27,36 @@ def page_produto():
         with col3:
             st.button("Limpar", on_click=clear_input, use_container_width=True, key="clear")
 
-                
+    
+
+    # * Variáveis préviamente definidas
+    values = fetch_ingrediente()
+    values = pd.DataFrame(values, columns=["nome"])
+
+
+
+
 
     # * Criar Produto
     if st.session_state.options == "cadastrar":
         with st.form("cadastrar_produto", clear_on_submit= True):
             st.subheader("Cadastrar Produto")
 
-            cols = st.columns(2)
+
+            cols = st.columns(3)
             with cols[0]:
                 nome = st.text_input("Nome")
-                preco = st.number_input("Preço", step=0.01)
             with cols[1]:
-                ingredientes = st.text_input("Ingredientes", placeholder="código 1, código 2, ...")
-               
+                nome_ingredientes = st.multiselect("Ingredientes", values)
+            with cols[2]:
+                preco = st.number_input("Preço", step=0.01)
+            
 
-
-    
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
-                    lista_ingredientes = ingredientes.split(", ")
-                    new_prod = create_produto(nome, preco, lista_ingredientes)
+                    new_prod = create_produto(nome, preco, nome_ingredientes)
 
                     if new_prod == True:
                         st.toast("Produto cadastrado com sucesso", icon="🎉")
@@ -71,22 +78,27 @@ def page_produto():
 
 
         if selected_prod:
-            with st.form("editar_produto", clear_on_submit=True):
+            with st.form("editar_produto", clear_on_submit=False):
                 st.subheader("Editar produto")
-    
-                cols = st.columns(2)
+
+
+                id_ingred = selected_prod["ingredientes"]
+                nome_ingred = [fetch_ingrediente_by_id(i)["nome"] for i in id_ingred]
+
+                cols = st.columns(3)
                 with cols[0]:
-                    codigo = st.number_input("Código", value=selected_prod["id_produto"], disabled=True)
                     nome = st.text_input("Nome", value=selected_prod["nome"])
-                    
                 with cols[1]:
+                    ing = st.multiselect("Ingredientes", options=nome_ingred, default=nome_ingred, disabled=True)
+                with cols[2]:
                     preco = st.number_input("Preço", value=selected_prod["preco"])
-                
+                  
+                    
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
                 with col1:
                     if st.form_submit_button("Editar", use_container_width=True):
-                        edit_ingred = edit_produto(codigo, nome, preco)
+                        edit_ingred = edit_produto(id_prod, nome, preco)
                         if edit_ingred == True:
                             st.session_state.changed = True
                             st.rerun()
@@ -104,6 +116,7 @@ def page_produto():
     # * Deletar produto
     if st.session_state.options == "deletar":
 
+
         if "deleted" not in st.session_state:
             st.session_state.deleted = False
         if st.session_state.deleted:
@@ -116,19 +129,26 @@ def page_produto():
             with st.form("deletar_produto", clear_on_submit=True):
                 st.subheader("Deletar produto")
 
-                cols = st.columns(2)
+                id_ingred = selected_prod["ingredientes"]
+                nome_ingred = [fetch_ingrediente_by_id(i)["nome"] for i in id_ingred]
+
+                
+
+                cols = st.columns(3)
                 with cols[0]:
-                    codigo = st.number_input("Código", value=selected_prod["id_produto"], disabled=True)
                     nome = st.text_input("Nome", value=selected_prod["nome"], disabled=True)
                 with cols[1]:
+                    ing = st.multiselect("Ingredientes", options=nome_ingred, default=nome_ingred, disabled=True)
+                with cols[2]:
                     preco = st.number_input("Preço", value=selected_prod["preco"], disabled=True)
+
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
                 with col1:
                     if st.form_submit_button("Deletar", use_container_width=True):
                         delete_ingred = delete_produto(id_prod)
-                        if delete_ingred:
+                        if delete_ingred == True:
                             st.session_state.deleted = True
                             st.rerun()
                         else:
