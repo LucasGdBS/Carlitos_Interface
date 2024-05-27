@@ -1,5 +1,7 @@
 
 import requests
+import pandas as pd
+from utils.clien_modules import fetch_cliente_by_telefone
 
 def fetch_pedido():
     url = "http://localhost:8080/pedidos/"

@@ -38,11 +38,11 @@ def page_ingrediente():
             with cols[0]:
                 codigo = st.number_input("Código", step=1)
                 nome = st.text_input("Nome")
-            dt_validade = st.text_input("Data de Validade", placeholder="aaaa-mm-dd")
+                tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], horizontal=True)
             with cols[1]:
                 quantidade = st.number_input("Quantidade", step=1)
-                tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], horizontal=True)
-          
+                dt_validade = st.text_input("Data de Validade", placeholder="aaaa-mm-dd")
+                
     
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
@@ -77,10 +77,19 @@ def page_ingrediente():
                 with cols[0]:
                     codigo = st.number_input("Código", value=selected_ingred["codigo"], disabled=True)
                     nome = st.text_input("Nome", value=selected_ingred["nome"])
-                    dt_validade = st.text_input("Data de Validade", value=selected_ingred["dtValidade"])
+
+                    
+                    if selected_ingred["tipoAlimento"] == "Porcionado":
+                        tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], index=0, horizontal=True)
+                    if selected_ingred["tipoAlimento"] == "Fatiado":
+                        tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], index=1, horizontal=True)
+                    if selected_ingred["tipoAlimento"] == "Unitario":
+                        tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], index=2, horizontal=True)
+
+                    
                 with cols[1]:
                     quantidade = st.number_input("Quantidade", value=selected_ingred["quantidade"])
-                    tipo = st.text_input("Tipo", value=selected_ingred["tipoAlimento"])
+                    dt_validade = st.text_input("Data de Validade", value=selected_ingred["dtValidade"])
                 
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
@@ -120,10 +129,18 @@ def page_ingrediente():
                 with cols[0]:
                     codigo = st.number_input("Código", value=selected_ingred["codigo"], disabled=True)
                     nome = st.text_input("Nome", value=selected_ingred["nome"], disabled=True)
-                    dt_validade = st.text_input("Data de Validade", value=selected_ingred["dtValidade"], disabled=True)
+
+                    if selected_ingred["tipoAlimento"] == "Porcionado":
+                        tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], index=0, horizontal=True)
+                    if selected_ingred["tipoAlimento"] == "Fatiado":
+                        tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], index=1, horizontal=True)
+                    if selected_ingred["tipoAlimento"] == "Unitario":
+                        tipo = st.radio("Tipo", ['Porcionado', 'Fatiado', 'Unitario'], index=2, horizontal=True)
+                        
                 with cols[1]:
                     quantidade = st.number_input("Quantidade", value=selected_ingred["quantidade"], disabled=True)
-                    tipo = st.text_input("Tipo", value=selected_ingred["tipoAlimento"], disabled=True)
+                    dt_validade = st.text_input("Data de Validade", value=selected_ingred["dtValidade"], disabled=True)
+
 
                 col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
