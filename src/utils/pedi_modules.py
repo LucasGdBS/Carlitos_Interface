@@ -64,8 +64,9 @@ def fetch_pedido_resumo_by_atendente(nome_atendente):
         return []
 
 
-def create_pedido(cod_nota, num_pedido, id_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input):
+def create_pedido(cod_nota, num_pedido, tel_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input):
 
+    id_cliente = int(fetch_cliente_by_telefone(tel_cliente)["id_cliente"])
     ids_produtos = [int(n.strip()) for n in id_input.split(",")]
     qntds_produtos = [int(n.strip()) for n in qntd_input.split(",")]
 
@@ -91,7 +92,7 @@ def create_pedido(cod_nota, num_pedido, id_cliente, id_input, cpf_atendente, dt_
         if response.status_code == 201:
             check += 1
         else:
-            return response.text
+            return f"{ids_produtos[i]}: {response.text}"
 
     if check == len(ids_produtos):
         return True

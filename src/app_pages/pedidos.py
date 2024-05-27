@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 from utils.page_modules import clear_input
 from utils.pedi_modules import fetch_pedido, fetch_pedido_by_id, fetch_pedido_by_name, fetch_pedido_resumo, fetch_pedido_resumo_by_atendente, create_pedido,  delete_pedido
-from utils.clien_modules import fetch_cliente_by_telefone
+from utils.clien_modules import fetch_cliente
+from datetime import datetime
+
 
 
 # * Página dos Pedidos
@@ -19,7 +21,7 @@ def page_pedido():
     if st.session_state.options == "deletar":
         col1, col2, col3 = st.columns([8, 1, 1])
         with col1:
-            id_pedido = st.text_input("ID do pedido", key="forms_input", placeholder="Número do pedido", label_visibility="collapsed")
+            id_pedido = st.text_input("ID do pedido", key="forms_input", placeholder="número do pedido", label_visibility="collapsed")
             selected_pedido = fetch_pedido_by_id(id_pedido)
         with col2:
             if st.button("Buscar", use_container_width=True, key="top_search_button"):
@@ -28,12 +30,17 @@ def page_pedido():
             st.button("Limpar", on_click=clear_input, use_container_width=True, key="clear")
     
 
+    # * Variáveis préviamente definidas
     count_pedido = fetch_pedido()
-    count_cod_nota = pd.DataFrame(count_pedido)["codigoNotalFiscal"].max()+1
-    count_num_pedido = pd.DataFrame(count_pedido)["numeroPedido"].max()+1
+    count_cod_nota = int(pd.DataFrame(count_pedido)["codigoNotalFiscal"].max()+1)
+    count_num_pedido = int(pd.DataFrame(count_pedido)["numeroPedido"].max()+1)
 
+    data_hoje = datetime.now().strftime("%Y-%m-%d")
 
-  
+    telefones = fetch_cliente()
+    telefones = [i["telefone_1"] for i in telefones] + [i["telefone_2"] for i in telefones]
+    
+
     
     # * Criar pedido
     if st.session_state.options == "cadastrar":
@@ -42,27 +49,25 @@ def page_pedido():
 
             cols = st.columns(2)
             with cols[0]:
-                cod_nota = st.number_input("Código Nota Fiscal", value=count_cod_nota, disabled=True)
-                num_pedido = st.number_input("Número do Pedido", value=count_num_pedido, disabled=True) 
-                id_cliente = st.number_input("ID do Cliente", step=1)
+                tel_cliente = st.selectbox("Telefone do Cliente", telefones)
                 id_input = st.text_input("IDs dos Produtos", placeholder="Ex: 1, 2, 3") 
-                cpf_atendente = st.text_input("CPF do Atendente")
-            with cols[1]:
-                dt_pedido = st.text_input("Data do Pedido", placeholder="aaaa-mm-dd")
-                forma_pagamento = st.selectbox("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"])
                 taxa_entrega = st.number_input("Taxa de Entrega")
                 desconto = st.number_input("Desconto")
+            with cols[1]:
+                cpf_atendente = st.text_input("CPF do Atendente")
                 qntd_input = st.text_input("Quantidades dos Produtos", placeholder="Ex: 1, 2, 3")
+                forma_pagamento = st.radio("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"], horizontal=True)
+                
             
 
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
-                    new_pedido = create_pedido(cod_nota, num_pedido, id_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input)
+                    new_pedido = create_pedido(count_cod_nota, count_num_pedido, tel_cliente, id_input, cpf_atendente, data_hoje, forma_pagamento, taxa_entrega, desconto, qntd_input)
 
                     if new_pedido == True:
-                        st.toast(f"Pedido {num_pedido} cadastrado com sucesso", icon="🎉")
+                        st.toast(f"Pedido {count_num_pedido} cadastrado com sucesso", icon="🎉")
                     else:
                         st.toast(new_pedido, icon="⚠️")
             with col2:
