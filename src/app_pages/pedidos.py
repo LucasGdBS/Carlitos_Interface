@@ -29,11 +29,11 @@ def page_pedido():
     
 
     count_pedido = fetch_pedido()
-    cod_nota = pd.DataFrame(count_pedido)["codigoNotalFiscal"].max()+1
-    num_pedido = pd.DataFrame(count_pedido)["numeroPedido"].max()+1
+    count_cod_nota = pd.DataFrame(count_pedido)["codigoNotalFiscal"].max()+1
+    count_num_pedido = pd.DataFrame(count_pedido)["numeroPedido"].max()+1
 
 
-    # ! ERRO NO CADASTRAR DE PEDIDOS
+    # ! ERRO NO CADASTRAR MAIS DE UM PRODUTO DENTRO DE UM PEDIDO
     
     # * Criar pedido
     if st.session_state.options == "cadastrar":
@@ -42,25 +42,24 @@ def page_pedido():
 
             cols = st.columns(2)
             with cols[0]:
-                id_cliente = st.text_input("ID do Cliente")
-                id_produto = st.text_input("IDs dos Produtos")
-                qnt_produto = st.text_input("Quantidade dos Produtos")
+                cod_nota = st.number_input("Código Nota Fiscal", value=count_cod_nota)
+                num_pedido = st.number_input("Número do Pedido", value=count_num_pedido)
+                id_cliente = st.number_input("ID do Cliente", step=1)
+                id_input = st.number_input("IDs dos Produtos", placeholder="Ex: 1, 2, 3", step=1)
                 cpf_atendente = st.text_input("CPF do Atendente")
             with cols[1]:
                 dt_pedido = st.text_input("Data do Pedido", placeholder="aaaa-mm-dd")
-                taxa_entrega = st.text_input("Taxa de Entrega")
-                desconto = st.text_input("Desconto")
-                forma_pagamento = st.radio("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"], horizontal=True)
+                forma_pagamento = st.selectbox("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"])
+                taxa_entrega = st.number_input("Taxa de Entrega")
+                desconto = st.number_input("Desconto")
+                qntd_input = st.number_input("Quantidades dos Produtos", placeholder="Ex: 1, 2, 3", step=1)
             
 
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
-
-                
-
-                    new_pedido = create_pedido(cod_nota, num_pedido, id_cliente, id_produto, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto)
+                    new_pedido = create_pedido(cod_nota, num_pedido, id_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input)
 
                     if new_pedido == True:
                         st.toast(f"Pedido {num_pedido} cadastrado com sucesso", icon="🎉")

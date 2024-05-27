@@ -64,28 +64,30 @@ def fetch_pedido_resumo_by_atendente(nome_atendente):
         return []
 
 
-def create_pedido(cod_nota, num_pedido, id_cliente, id_produto, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto):
+def create_pedido(cod_nota, num_pedido, id_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input):
+
+
+
     url = "http://localhost:8080/pedidos/"
     data = {
         "codigoNotalFiscal": cod_nota,
         "numeroPedido": num_pedido,
         "idCliente": id_cliente,
-        "produtoId": id_produto,
+        "produtoId": id_input,
         "atendenteCpf": cpf_atendente,
         "dtPedido": dt_pedido,
         "formaPagamento": forma_pagamento,
         "taxaEntrega": taxa_entrega,
         "desconto": desconto,
-        "qntProduto": qnt_produto
+        "qntProduto": qntd_input
     }
-    try:
-        response = requests.post(url, json=data)
-        if response.status_code == 201:
-            return True
-        else:
-            return response.text
-    except Exception:
-        return False
+
+    response = requests.post(url, json=data)
+    if response.status_code == 201:
+        return True
+    else:
+        return response.text
+
 
 
 def delete_pedido(id_pedido):
