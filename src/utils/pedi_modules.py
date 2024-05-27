@@ -66,27 +66,35 @@ def fetch_pedido_resumo_by_atendente(nome_atendente):
 
 def create_pedido(cod_nota, num_pedido, id_cliente, id_input, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input):
 
+    ids_produtos = [int(n.strip()) for n in id_input.split(",")]
+    qntds_produtos = [int(n.strip()) for n in qntd_input.split(",")]
 
+    check = 0
 
     url = "http://localhost:8080/pedidos/"
-    data = {
-        "codigoNotalFiscal": cod_nota,
-        "numeroPedido": num_pedido,
-        "idCliente": id_cliente,
-        "produtoId": id_input,
-        "atendenteCpf": cpf_atendente,
-        "dtPedido": dt_pedido,
-        "formaPagamento": forma_pagamento,
-        "taxaEntrega": taxa_entrega,
-        "desconto": desconto,
-        "qntProduto": qntd_input
-    }
 
-    response = requests.post(url, json=data)
-    if response.status_code == 201:
+    for i in range(len(ids_produtos)):
+        data = {
+            "codigoNotalFiscal": cod_nota,
+            "numeroPedido": num_pedido,
+            "idCliente": id_cliente,
+            "produtoId": ids_produtos[i],
+            "atendenteCpf": cpf_atendente,
+            "dtPedido": dt_pedido,
+            "formaPagamento": forma_pagamento,
+            "taxaEntrega": taxa_entrega,
+            "desconto": desconto,
+            "qntProduto": qntds_produtos[i]
+        }
+
+        response = requests.post(url, json=data)
+        if response.status_code == 201:
+            check += 1
+        else:
+            return response.text
+
+    if check == len(ids_produtos):
         return True
-    else:
-        return response.text
 
 
 

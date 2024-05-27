@@ -33,7 +33,7 @@ def page_pedido():
     count_num_pedido = pd.DataFrame(count_pedido)["numeroPedido"].max()+1
 
 
-    # ! ERRO NO CADASTRAR MAIS DE UM PRODUTO DENTRO DE UM PEDIDO
+  
     
     # * Criar pedido
     if st.session_state.options == "cadastrar":
@@ -42,17 +42,17 @@ def page_pedido():
 
             cols = st.columns(2)
             with cols[0]:
-                cod_nota = st.number_input("Código Nota Fiscal", value=count_cod_nota)
-                num_pedido = st.number_input("Número do Pedido", value=count_num_pedido)
+                cod_nota = st.number_input("Código Nota Fiscal", value=count_cod_nota, disabled=True)
+                num_pedido = st.number_input("Número do Pedido", value=count_num_pedido, disabled=True) 
                 id_cliente = st.number_input("ID do Cliente", step=1)
-                id_input = st.number_input("IDs dos Produtos", placeholder="Ex: 1, 2, 3", step=1)
+                id_input = st.text_input("IDs dos Produtos", placeholder="Ex: 1, 2, 3") 
                 cpf_atendente = st.text_input("CPF do Atendente")
             with cols[1]:
                 dt_pedido = st.text_input("Data do Pedido", placeholder="aaaa-mm-dd")
                 forma_pagamento = st.selectbox("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"])
                 taxa_entrega = st.number_input("Taxa de Entrega")
                 desconto = st.number_input("Desconto")
-                qntd_input = st.number_input("Quantidades dos Produtos", placeholder="Ex: 1, 2, 3", step=1)
+                qntd_input = st.text_input("Quantidades dos Produtos", placeholder="Ex: 1, 2, 3")
             
 
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
