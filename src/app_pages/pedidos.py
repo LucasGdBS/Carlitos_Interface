@@ -59,7 +59,7 @@ def page_pedido():
                 desconto = st.number_input("Desconto")
             with cols[1]:
                 cpf_atendente = st.text_input("CPF do Atendente")
-                qntd_input = st.multiselect("Quantidade dos Produtos", options=[int(i) for i in range(1, 100)])
+                qntd_input = st.text_input("Quantidade do Produto", placeholder="1, 2, 3, ...")
                 forma_pagamento = st.radio("Forma de Pagamento", ["dinheiro", "crédito", "débito", "pix"], horizontal=True)
                 
             

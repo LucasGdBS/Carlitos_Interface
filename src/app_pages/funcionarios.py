@@ -40,7 +40,7 @@ def page_funcionario():
             with cols[1]:
                 nome = st.text_input("Nome")
             with cols[2]:
-                salario = st.text_input("Salario")
+                salario = st.text_input("Salário")
     
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 

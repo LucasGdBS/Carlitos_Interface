@@ -39,24 +39,25 @@ def page_produto():
 
     # * Criar Produto
     if st.session_state.options == "cadastrar":
-        with st.form("cadastrar_produto", clear_on_submit= True):
+        with st.form("cadastrar_produto", clear_on_submit= False):
             st.subheader("Cadastrar Produto")
 
 
-            cols = st.columns(3)
+            cols = st.columns(2)
             with cols[0]:
                 nome = st.text_input("Nome")
-            with cols[1]:
                 nome_ingredientes = st.multiselect("Ingredientes", values)
-            with cols[2]:
+            with cols[1]:
                 preco = st.number_input("Preço", step=0.01)
+                qntd_input = st.text_input("Quantidade de cada ingrediente", placeholder="ex: 1, 2, 3")
+                
             
 
             col_space, col1, col2 = st.columns([7, 1, 1], gap="small")
 
             with col1:
                 if st.form_submit_button("Cadastrar", use_container_width=True):
-                    new_prod = create_produto(nome, preco, nome_ingredientes)
+                    new_prod = create_produto(nome, preco, nome_ingredientes, qntd_input)
 
                     if new_prod == True:
                         st.toast("Produto cadastrado com sucesso", icon="🎉")
@@ -196,6 +197,7 @@ def page_produto():
     if data_prod == []:
         st.error("Nenhum produto encontrado")
     else:
+        df_prod.drop(columns=["quantidadeIngredientes"], inplace=True)
         df_prod.columns = ["Código", "Nome", "Preço(R$)", "Ingredientes"]
         st.dataframe(df_prod, hide_index=True, use_container_width=True)   
         

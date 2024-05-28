@@ -65,14 +65,15 @@ def fetch_pedido_resumo_by_atendente(nome_atendente):
         return []
 
 
-def create_pedido(cod_nota, num_pedido, tel_cliente, nome_produtos, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_produtos):
+def create_pedido(cod_nota, num_pedido, tel_cliente, nome_produtos, cpf_atendente, dt_pedido, forma_pagamento, taxa_entrega, desconto, qntd_input):
 
     id_cliente = int(fetch_cliente_by_telefone(tel_cliente)["id_cliente"])
     id_produtos= []
     for i in nome_produtos:
         produto = fetch_produto_by_nome(i)[0]["id_produto"]
         id_produtos.append(produto)
-    # qntds_produtos = [int(n.strip()) for n in qntd_input.split(",")]
+
+    qntd_produtos = [int(n.strip()) for n in qntd_input.split(",")]
 
     check = 0
 

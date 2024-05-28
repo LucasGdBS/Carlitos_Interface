@@ -50,18 +50,20 @@ def fetch_produto_ingredientes(id):
         return []
 
 
-def create_produto(nome, preco, nome_ingredientes):
+def create_produto(nome, preco, nome_ingredientes, qntd_input):
     id_ingredientes = []
     for i in nome_ingredientes:
         ingrediente = fetch_ingrediente_by_nome(i)[0]["codigo"]
         id_ingredientes.append(ingrediente)
 
+    qntd_ingrediendes = [int(n.strip()) for n in qntd_input.split(",")]
 
     url = "http://localhost:8080/produtos/"
     data = {
         "nome": nome,
         "preco": preco,
-        "ingredientes": id_ingredientes
+        "ingredientes": id_ingredientes,
+        "quantidadeIngredientes": qntd_ingrediendes
     }
     try:
         response = requests.post(url, json=data)
